@@ -617,17 +617,27 @@ function openSheet(k){
 }
 
 let noteSaveTimer = null;
+
 function saveNote(){
   const ta = document.getElementById('noteTa');
   if(!ta || !currentSheetKey) return;
+
   notes[currentSheetKey] = ta.value;
   saveNotes();
+
   clearTimeout(noteSaveTimer);
+
   const el = document.getElementById('noteSaved');
-  if(el){ el.classList.add('show'); noteSaveTimer=setTimeout(()=>el.classList.remove('show'),1800); }
-  const flag = document.querySelector(`.step[data-k="${k}"] .note-flag`);
-  if(flag){flag.style.display = textarea.value.trim() ? 'inline-block' : 'none';
-}
+  if(el){
+    el.classList.add('show');
+    noteSaveTimer = setTimeout(()=>el.classList.remove('show'),1800);
+  }
+
+  const flag = document.querySelector(`.step[data-k="${currentSheetKey}"] .note-flag`);
+  if(flag){
+    flag.style.display = ta.value.trim() ? 'inline-block' : 'none';
+  }
+  }
 }
 
 function closeSheet(){document.getElementById('ov').classList.remove('open');currentSheetKey=null;}
