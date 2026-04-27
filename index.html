@@ -49,7 +49,18 @@ h1 em{font-style:italic;color:var(--terracotta);}
 .card.shut .chevron{transform:rotate(-90deg);}
 .card-body{overflow:hidden;transition:max-height .32s ease, opacity .25s ease;max-height:3000px;opacity:1;}
 .card.shut .card-body{max-height:0;opacity:0;}
-
+.note-flag{
+  display:inline-block;
+  font-size:.46rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:.08rem .35rem;
+  border-radius:2px;
+  margin-left:.35rem;
+  background:#fff3dc;
+  color:#9a6e10;
+  border:1px solid #f0d8b8;
+}
 /* ─ STEPS ─ */
 .steps{padding:.3rem 0;}
 .step{display:flex;align-items:flex-start;gap:.7rem;padding:.6rem 1.1rem;border-bottom:1px solid #f5f0eb;}
@@ -495,7 +506,7 @@ function renderStep(s,key,num){
     <span class="snum">${num}</span>
     <div class="chk" onclick="tog('${key}')"></div>
     <div class="si" onclick="${info?`openSheet('${s.k}')`:`tog('${key}')`}">
-      <div class="snr"><span class="sn">${s.n}</span>${tim}${tags}</div>${sub}
+      <div class="snr"><span class="sn">${s.n}</span><span class="note-flag" style="display:none">Nota</span>${tim}${tags}</div>${sub}
     </div>
   </div>`;
 }
@@ -614,6 +625,9 @@ function saveNote(){
   clearTimeout(noteSaveTimer);
   const el = document.getElementById('noteSaved');
   if(el){ el.classList.add('show'); noteSaveTimer=setTimeout(()=>el.classList.remove('show'),1800); }
+  const flag = document.querySelector(`.step[data-k="${k}"] .note-flag`);
+  if(flag){flag.style.display = textarea.value.trim() ? 'inline-block' : 'none';
+}
 }
 
 function closeSheet(){document.getElementById('ov').classList.remove('open');currentSheetKey=null;}
