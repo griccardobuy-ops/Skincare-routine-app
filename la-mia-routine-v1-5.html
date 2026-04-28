@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Mia Routine v1.5</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="La Mia Routine">
+<meta name="theme-color" content="#f5f0eb">
+<link rel="apple-touch-icon" id="appIcon">
+<link rel="manifest" id="manifestLink">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f0eb;--warm:#e8ddd2;--sand:#c9b8a4;
+  --terracotta:#b07a5c;--deep:#3d2b1f;
+  --mc:#f9c784;--ec:#8c7a9e;--tc:#7a9e8c;--yc:#9e7a8c;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--deep);font-family:'DM Mono',monospace;min-height:100vh;padding:1.5rem 1rem 4rem;}
+
+/* ─ HEADER ─ */
+header{text-align:center;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--sand);}
+h1{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;}
+h1 em{font-style:italic;color:var(--terracotta);}
+.sub{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--sand);margin-top:.3rem;}
+
+/* ─ DAY SELECTOR ─ */
+.days{display:flex;gap:.4rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.8rem;}
+.db{background:none;border:1px solid var(--sand);color:var(--deep);font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .7rem;cursor:pointer;border-radius:2px;transition:all .2s;}
+.db.on{background:var(--deep);border-color:var(--deep);color:var(--cream);}
+.db:hover:not(.on){border-color:var(--terracotta);color:var(--terracotta);}
+
+/* ─ ACCORDION CARD ─ */
+.card{background:white;border-radius:4px;margin-bottom:.8rem;overflow:hidden;box-shadow:0 1px 8px rgba(61,43,31,.06);}
+.card-hd{
+  display:flex;align-items:center;gap:.6rem;padding:.9rem 1.1rem;
+  cursor:pointer;user-select:none;transition:filter .15s;
+}
+.card-hd:hover{filter:brightness(.97);}
+.card-hd .icon{font-size:1rem;}
+.card-hd .title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;}
+.badge{margin-left:auto;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .5rem;border-radius:2px;color:white;background:var(--sand);white-space:nowrap;}
+.bm{background:var(--mc);color:var(--deep);}
+.be{background:var(--ec);}
+.bt{background:var(--tc);}
+.by{background:var(--yc);}
+.chevron{font-size:.65rem;color:var(--sand);margin-left:.4rem;transition:transform .25s;flex-shrink:0;}
+.card.shut .chevron{transform:rotate(-90deg);}
+.card-body{overflow:hidden;transition:max-height .32s ease, opacity .25s ease;max-height:3000px;opacity:1;}
+.card.shut .card-body{max-height:0;opacity:0;}
+
+/* ─ STEPS ─ */
+.steps{padding:.3rem 0;}
+.step{display:flex;align-items:flex-start;gap:.7rem;padding:.6rem 1.1rem;border-bottom:1px solid #f5f0eb;}
+.step:last-child{border-bottom:none;}
+.snum{font-size:.5rem;color:var(--sand);min-width:.9rem;text-align:right;flex-shrink:0;padding-top:3px;}
+.chk{width:16px;height:16px;border:1.5px solid var(--sand);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;margin-top:1px;}
+.step.done .chk{background:var(--terracotta);border-color:var(--terracotta);}
+.step.done .chk::after{content:'';width:5px;height:3px;border-left:1.5px solid white;border-bottom:1.5px solid white;transform:rotate(-45deg) translateY(-1px);}
+.si{flex:1;cursor:pointer;min-width:0;}
+.snr{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;}
+.sn{font-size:.71rem;line-height:1.4;border-bottom:1px dashed transparent;transition:border-color .15s,color .15s;}
+.si:hover .sn{color:var(--terracotta);border-bottom-color:var(--terracotta);}
+.step.done .sn{text-decoration:line-through;color:var(--sand);}
+.ssub{font-size:.54rem;color:var(--sand);font-style:italic;margin-top:.12rem;}
+.stag{font-size:.46rem;letter-spacing:.08em;text-transform:uppercase;padding:.1rem .35rem;border-radius:2px;flex-shrink:0;}
+.tag-retinoid{background:#f0e8ef;color:var(--ec);}
+.tag-glycolic{background:#e8f0ed;color:#5a8a7a;}
+.tag-peptide{background:#f0ebe8;color:var(--terracotta);}
+.tag-spf{background:#fff3dc;color:#9a6e10;}
+.tag-capelli{background:#eae8f0;color:#6a5a8a;}
+.tag-rose{background:#fce8ee;color:#b05070;}
+.timing{display:inline-block;font-size:.46rem;letter-spacing:.05em;text-transform:uppercase;background:#fef3e8;color:#a06030;border:1px solid #f0d8b8;padding:.08rem .35rem;border-radius:2px;flex-shrink:0;}
+
+/* ─ PROGRESS ─ */
+.prog{padding:0 1.1rem .75rem;}
+.pbg{height:3px;background:var(--warm);border-radius:2px;overflow:hidden;}
+.pfi{height:100%;background:var(--terracotta);border-radius:2px;transition:width .4s;}
+.plb{font-size:.5rem;color:var(--sand);letter-spacing:.1em;margin-top:.28rem;}
+
+/* ─ TIP ─ */
+.tip-hd{background:#eef4f1;}
+.tip-bd{padding:1rem 1.1rem;}
+.tip-tx{font-size:.7rem;line-height:1.75;color:var(--deep);}
+
+/* ─ YOGA ─ */
+.yoga-hd{background:#f4eef3;}
+.yoga-bd{padding:1rem 1.1rem;}
+.yna{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;margin-bottom:.15rem;}
+.yzo{font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--yc);margin-bottom:.85rem;}
+.yill{width:100%;background:#fdf8f5;border-radius:6px;margin-bottom:.9rem;padding:.6rem;display:flex;align-items:center;justify-content:center;}
+.yill svg{width:100%;max-width:260px;height:auto;display:block;margin:0 auto;}
+.ysteps{list-style:none;margin-bottom:.7rem;}
+.ysteps li{font-size:.67rem;line-height:1.6;padding:.22rem 0;border-bottom:1px dashed var(--warm);display:flex;gap:.5rem;}
+.ysteps li:last-child{border-bottom:none;}
+.ysteps li::before{content:attr(data-n);color:var(--yc);font-size:.58rem;flex-shrink:0;padding-top:.1rem;}
+.yreps{display:inline-block;font-size:.56rem;background:#f4eef3;color:var(--yc);padding:.18rem .55rem;border-radius:2px;}
+.note-label{display:inline-flex;align-items:center;gap:.25rem;font-size:.46rem;letter-spacing:.07em;text-transform:uppercase;background:#e8f4fc;color:#4a8aaa;border:1px solid #b8d8ee;padding:.1rem .35rem;border-radius:2px;flex-shrink:0;}
+
+/* ─ RULES ─ */
+.rules{background:white;border-radius:4px;padding:.9rem 1.1rem;box-shadow:0 1px 8px rgba(61,43,31,.06);margin-bottom:.8rem;}
+.rt{font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:var(--sand);margin-bottom:.65rem;}
+.rule{font-size:.66rem;line-height:1.5;padding:.25rem 0;border-bottom:1px dashed var(--warm);display:flex;gap:.5rem;}
+.rule:last-child{border-bottom:none;}
+.rule::before{content:'—';color:var(--sand);flex-shrink:0;}
+
+.reset{display:block;width:100%;padding:.65rem;background:none;border:1px dashed var(--sand);color:var(--sand);font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all .2s;margin-top:.5rem;}
+.reset:hover{border-color:var(--terracotta);color:var(--terracotta);}
+.congrats{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--terracotta);padding:.5rem 0;opacity:0;transition:opacity .5s;pointer-events:none;}
+.congrats.show{opacity:1;}
+
+/* ─ BOTTOM SHEET ─ */
+.ov{display:none;position:fixed;inset:0;background:rgba(61,43,31,.42);z-index:200;align-items:flex-end;justify-content:center;}
+.ov.open{display:flex;}
+.sheet{background:var(--cream);width:100%;max-width:520px;border-radius:14px 14px 0 0;padding:1.4rem 1.4rem 3rem;max-height:85vh;overflow-y:auto;animation:up .22s ease;}
+@keyframes up{from{transform:translateY(28px);opacity:0}to{transform:translateY(0);opacity:1}}
+.sh{width:34px;height:3px;background:var(--sand);border-radius:2px;margin:0 auto 1.2rem;}
+.shn{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:400;margin-bottom:.3rem;}
+.shta{margin-bottom:1rem;display:flex;gap:.4rem;flex-wrap:wrap;}
+.shbl{margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px dashed var(--warm);}
+.shbl:last-child{border-bottom:none;margin-bottom:0;}
+.shla{font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:var(--sand);margin-bottom:.35rem;}
+.shqt{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--terracotta);}
+.shtx{font-size:.7rem;line-height:1.75;}
+
+/* notes textarea */
+.notes-wrap{margin-top:.5rem;}
+.notes-ta{
+  width:100%;min-height:80px;padding:.6rem .75rem;
+  background:white;border:1px solid var(--warm);border-radius:4px;
+  font-family:'DM Mono',monospace;font-size:.68rem;line-height:1.6;color:var(--deep);
+  resize:vertical;outline:none;transition:border-color .2s;
+}
+.notes-ta:focus{border-color:var(--sand);}
+.notes-ta::placeholder{color:var(--sand);}
+.notes-saved{font-size:.5rem;color:var(--tc);letter-spacing:.08em;margin-top:.3rem;opacity:0;transition:opacity .4s;}
+.notes-saved.show{opacity:1;}
+.title-input{
+  width:100%;padding:.45rem .6rem;margin-top:.4rem;
+  background:white;border:1px solid var(--warm);border-radius:4px;
+  font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--deep);
+  outline:none;transition:border-color .2s;
+}
+.title-input:focus{border-color:var(--sand);}
+.title-reset{font-size:.52rem;color:var(--sand);cursor:pointer;margin-top:.25rem;display:inline-block;text-decoration:underline;}
+.title-reset:hover{color:var(--terracotta);}
+
+.shcl{display:block;width:100%;margin-top:1.3rem;padding:.75rem;background:var(--deep);color:var(--cream);border:none;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>La Mia <em>Routine</em></h1>
+  <div class="sub">Skincare · The Ordinary · Settimana tipo</div>
+</header>
+
+<div class="days" id="daySel"></div>
+<div id="content"></div>
+
+<div class="rules">
+  <div class="rt">Regole chiave</div>
+  <div class="rule">Glicolico mai con retinoide o peptidi</div>
+  <div class="rule">Peptidi solo al mattino, su pelle asciutta</div>
+  <div class="rule">Niacinamide ferma per ora</div>
+</div>
+<button class="reset" onclick="resetDay()">↺ Reset giornata</button>
+
+<!-- SHEET -->
+<div class="ov" id="ov" onclick="maybeClose(event)">
+  <div class="sheet">
+    <div class="sh"></div>
+    <div id="shBody"></div>
+    <button class="shcl" onclick="closeSheet()">Chiudi</button>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────────────────────────────────────
+const INFO = {
+  detergente:{n:'Detergente Yves Rocher Pure Algue',tags:[],qty:'Quantità da nocciola',come:'Emulsiona con acqua tiepida tra i palmi, applica con movimenti circolari per 30–60 s, risciacqua bene. Evita acqua troppo calda.',cons:'Detergente delicato a base di alghe. Dopo il risciacquo la pelle deve sentirsi pulita ma mai "tirata".'},
+  rose:{n:'Acqua di Rose',tags:[{k:'rose',l:'Toner'}],qty:'4–5 spruzzi (o dischetto imbevuto)',come:'Spruzza a 20–25 cm tenendo gli occhi chiusi, oppure tampona con un dischetto dall\'interno verso l\'esterno. Non sciacquare. Aspetta 20–30 s prima dell\'HA.',cons:'Scegli acqua di rose senza alcol e senza profumo. Conservala in frigo per un effetto lenitivo extra.'},
+  ha:{n:'Hyaluronic Acid 2% + B5',tags:[],qty:'3–4 gocce (pipetta)',come:'Applica su viso ancora umido, 20–30 s dopo l\'acqua di rose. Sigilla subito con la crema — senza crema sopra, l\'HA evapora.',cons:'Non aspettare che la pelle asciughi del tutto. In ambienti riscaldati o secchi applica la crema quasi subito.'},
+  peptidi:{n:'Multi-Peptide + Copper Peptides',tags:[{k:'peptide',l:'Peptidi'}],qty:'3–4 gocce (pipetta)',come:'Su pelle asciutta, dopo l\'assorbimento dell\'HA. Stendi su viso e collo con movimenti ascendenti. Aspetta 30 s, poi applica la crema.',cons:'Solo al mattino — il retinoide serale ne riduce l\'efficacia. Supportano il collagene e migliorano la texture nel tempo.'},
+  crema:{n:'Crema Idratante',tags:[],qty:'Quantità da noce di burro',come:'Ultimo step (prima dell\'SPF al mattino, sigillo serale). Scalda tra i polpastrelli, stendi con movimenti delicati verso l\'esterno su viso e collo.',cons:'Sigilla tutto quello che hai applicato prima. Formula senza profumo se la pelle è sensibile.'},
+  spf:{n:'SPF — Protezione Solare',tags:[{k:'spf',l:'SPF'}],qty:'¼ cucchiaino (regola 2 mg/cm²)',come:'Ultimo step mattutino. Distribuisci uniformemente su viso, collo e orecchie. Riapplica ogni 2 ore in esposizione prolungata.',cons:'Il prodotto anti-aging più efficace in assoluto. Essenziale con glicolico e retinoide. Anche in inverno e in città.'},
+  retinoid:{n:'Granactive Retinoid 2% Emulsion',tags:[{k:'retinoid',l:'Retinoid'}],qty:'2–3 gocce (pipetta)',come:'Su pelle asciutta dopo l\'HA. Stendi su guance, fronte e mento evitando il contorno occhi e le narici.',cons:'Retinoide di nuova generazione, meno irritante del retinolo classico. Leggero pizzicore nelle prime settimane è normale.'},
+  glycolic:{n:'Glycolic Acid 7% Toning Solution',tags:[{k:'glycolic',l:'Glicolico'}],qty:'1 dischetto di cotone ben imbevuto',come:'Subito dopo il detergente, su pelle asciutta. Tampona con movimenti circolari evitando il contorno occhi. Non sciacquare. Aspetta 5–10 min prima del passo successivo.',cons:'Solo la sera, mai lo stesso giorno del retinoide. Il giorno dopo usa sempre SPF.'},
+  siero:{n:'Siero Cute',tags:[{k:'capelli',l:'Capelli'}],qty:'6–8 gocce (o dose indicata)',come:'Sullo scalpo asciutto. Massaggia con i polpastrelli con movimenti circolari per 30–60 s. Non sciacquare.',cons:'Risultati dopo 8–12 settimane. Il massaggio è fondamentale quanto il prodotto stesso.'}
+};
+
+const M = [ // MORNING
+  {n:'Detergente Yves Rocher Pure Algue',k:'detergente',tags:[],t:null},
+  {n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},
+  {n:'Hyaluronic Acid',k:'ha',tags:[],t:null},
+  {n:'Multi-Peptide + Copper Peptides',k:'peptidi',tags:['peptide'],t:'pelle asciutta · aspetta 30 s'},
+  {n:'Crema idratante',k:'crema',tags:[],t:null},
+  {n:'SPF (se esci)',k:'spf',tags:['spf'],t:null},
+];
+
+const E = [ // EVENING by day 0=Mon
+  [{n:'Detergente',k:'detergente',tags:[],t:null},{n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},{n:'Hyaluronic Acid',k:'ha',tags:[],t:null},{n:'Granactive Retinoid 2%',k:'retinoid',tags:['retinoid'],t:null},{n:'Crema',k:'crema',tags:[],t:null}],
+  [{n:'Detergente',k:'detergente',tags:[],t:null},{n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},{n:'Hyaluronic Acid',k:'ha',tags:[],t:null},{n:'Crema',k:'crema',tags:[],t:null}],
+  [{n:'Detergente',k:'detergente',tags:[],t:null},{n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},{n:'Hyaluronic Acid',k:'ha',tags:[],t:null},{n:'Granactive Retinoid 2%',k:'retinoid',tags:['retinoid'],t:null},{n:'Crema',k:'crema',tags:[],t:null}],
+  [{n:'Detergente',k:'detergente',tags:[],t:null},{n:'Glycolic Acid 7%',k:'glycolic',tags:['glycolic'],t:'aspetta 5–10 min'},{n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},{n:'Hyaluronic Acid',k:'ha',tags:[],t:null},{n:'Crema',k:'crema',tags:[],t:null}],
+  [{n:'Detergente',k:'detergente',tags:[],t:null},{n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},{n:'Hyaluronic Acid',k:'ha',tags:[],t:null},{n:'Granactive Retinoid 2%',k:'retinoid',tags:['retinoid'],t:null},{n:'Crema',k:'crema',tags:[],t:null}],
+  [{n:'Detergente',k:'detergente',tags:[],t:null},{n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},{n:'Hyaluronic Acid',k:'ha',tags:[],t:null},{n:'Crema',k:'crema',tags:[],t:null}],
+  [{n:'Detergente',k:'detergente',tags:[],t:null},{n:'Glycolic Acid 7%',k:'glycolic',tags:['glycolic'],t:'aspetta 5–10 min'},{n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},{n:'Hyaluronic Acid',k:'ha',tags:[],t:null},{n:'Crema',k:'crema',tags:[],t:null}],
+];
+
+const HAIR = {n:'Siero cute + massaggio 30–60 s',k:'siero',tags:['capelli'],t:null};
+
+const TIPS = [
+  'L\'SPF è il prodotto anti-aging più efficace in assoluto. Proteggere la pelle dai raggi UV previene fotoinvecchiamento e macchie — soprattutto con acidi e retinoidi che aumentano la fotosensibilità.',
+  'La barriera cutanea è il tuo scudo: quando è intatta la pelle resta idratata ed elastica. Detergenti troppo aggressivi possono comprometterla e renderla più sensibile a secchezza e irritazioni.',
+  'Applica la crema su pelle ancora leggermente umida: assorbe meglio i principi attivi e l\'effetto barriera è più efficace. È lo stesso principio per cui l\'HA va applicato subito dopo l\'acqua di rose.',
+  'Stress, alimentazione scorretta e mancanza di sonno si riflettono sulla pelle. Un sonno regolare favorisce la rigenerazione cellulare notturna — la finestra in cui il retinoide lavora meglio.',
+  'Adatta la routine alle stagioni: in inverno scegli texture più ricche, in estate formule leggere. Non trascurare mai l\'SPF — anche in inverno i raggi UVA passano le nuvole.',
+  'Routine semplici con pochi prodotti di qualità sono spesso più efficaci di layering complessi. Sovraccaricare la pelle con troppi attivi può stressarla e ridurne la tolleranza.',
+  'Il massaggio facciale quotidiano stimola la microcircolazione, migliora l\'apporto di ossigeno e può aiutare a ridurre gonfiori e tensioni. Incorporalo mentre applichi la crema.',
+];
+
+// ─ YOGA SVGs ─────────────────────────────────────────────────────────────────
+const Y_SVG = [
+
+  // 0 Lun — Fronte
+  `<svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,1L7,4L0,7Z" fill="#9e7a8c"/></marker>
+    <marker id="arb" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,1L7,4L0,7Z" fill="#b07a5c"/></marker>
+  </defs>
+  <!-- silhouette testa -->
+  <ellipse cx="140" cy="108" rx="68" ry="80" fill="#ede0d4"/>
+  <!-- zona target: fronte evidenziata -->
+  <path d="M80 80 Q140 55 200 80 L200 100 Q140 78 80 100 Z" fill="#9e7a8c" opacity=".25"/>
+  <path d="M80 80 Q140 55 200 80" fill="none" stroke="#9e7a8c" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <!-- capelli -->
+  <path d="M74 90 Q72 48 140 40 Q208 48 206 90" fill="#c8a882"/>
+  <!-- collo -->
+  <rect x="122" y="184" width="36" height="20" rx="4" fill="#ede0d4"/>
+  <!-- orecchie -->
+  <ellipse cx="72" cy="112" rx="9" ry="13" fill="#e4cfc0"/>
+  <ellipse cx="208" cy="112" rx="9" ry="13" fill="#e4cfc0"/>
+  <!-- occhi -->
+  <ellipse cx="116" cy="106" rx="13" ry="9" fill="white" stroke="#c4a888" stroke-width="1"/>
+  <ellipse cx="164" cy="106" rx="13" ry="9" fill="white" stroke="#c4a888" stroke-width="1"/>
+  <circle cx="116" cy="106" r="5" fill="#6b4c3b"/>
+  <circle cx="164" cy="106" r="5" fill="#6b4c3b"/>
+  <!-- sopracciglia alzate -->
+  <path d="M100 88 Q116 80 130 86" fill="none" stroke="#8B6248" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M150 86 Q164 80 180 88" fill="none" stroke="#8B6248" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- frecce sopracciglia su -->
+  <line x1="116" y1="90" x2="116" y2="78" stroke="#b07a5c" stroke-width="2" marker-end="url(#arb)"/>
+  <line x1="164" y1="90" x2="164" y2="78" stroke="#b07a5c" stroke-width="2" marker-end="url(#arb)"/>
+  <!-- mani semplificate: due barre orizzontali -->
+  <rect x="18" y="100" width="44" height="14" rx="7" fill="#e4cfc0" stroke="#c4a888" stroke-width="1"/>
+  <rect x="218" y="100" width="44" height="14" rx="7" fill="#e4cfc0" stroke="#c4a888" stroke-width="1"/>
+  <!-- frecce mani verso le tempie -->
+  <line x1="64" y1="107" x2="78" y2="107" stroke="#9e7a8c" stroke-width="2" marker-end="url(#ar)"/>
+  <line x1="216" y1="107" x2="202" y2="107" stroke="#9e7a8c" stroke-width="2" marker-end="url(#ar)"/>
+  <!-- naso e bocca -->
+  <path d="M136 120 Q132 130 128 134 Q140 138 152 134 Q148 130 144 120" fill="none" stroke="#c4a080" stroke-width="1.2"/>
+  <path d="M122 158 Q140 166 158 158" fill="none" stroke="#c4a080" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- label zona -->
+  <rect x="90" y="58" width="100" height="16" rx="3" fill="#9e7a8c" opacity=".85"/>
+  <text x="140" y="69" text-anchor="middle" font-size="8.5" fill="white" font-family="sans-serif" font-weight="bold">FRONTE</text>
+  <!-- caption -->
+  <text x="140" y="194" text-anchor="middle" font-size="9" fill="#9e7a8c" font-family="serif" font-style="italic">mani verso le tempie · sopracciglia su</text>
+</svg>`,
+
+  // 1 Mar — Guance
+  `<svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,1L7,4L0,7Z" fill="#9e7a8c"/></marker></defs>
+  <ellipse cx="140" cy="108" rx="68" ry="80" fill="#ede0d4"/>
+  <!-- zone target: guance -->
+  <ellipse cx="96" cy="128" rx="28" ry="20" fill="#9e7a8c" opacity=".22"/>
+  <ellipse cx="184" cy="128" rx="28" ry="20" fill="#9e7a8c" opacity=".22"/>
+  <path d="M74 90 Q72 48 140 40 Q208 48 206 90" fill="#c8a882"/>
+  <rect x="122" y="184" width="36" height="20" rx="4" fill="#ede0d4"/>
+  <ellipse cx="72" cy="112" rx="9" ry="13" fill="#e4cfc0"/>
+  <ellipse cx="208" cy="112" rx="9" ry="13" fill="#e4cfc0"/>
+  <!-- occhi a mezzaluna (sorriso) -->
+  <path d="M104 100 Q116 90 128 100" fill="none" stroke="#8B6248" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M152 100 Q164 90 176 100" fill="none" stroke="#8B6248" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- sorriso ampio -->
+  <path d="M96 148 Q140 175 184 148" fill="#f5d5cc" stroke="#c4908a" stroke-width="2" stroke-linecap="round"/>
+  <!-- dita sugli zigomi -->
+  <circle cx="96" cy="120" r="10" fill="#e4cfc0" stroke="#c4a888" stroke-width="1.2"/>
+  <circle cx="184" cy="120" r="10" fill="#e4cfc0" stroke="#c4a888" stroke-width="1.2"/>
+  <!-- frecce su -->
+  <line x1="96" y1="108" x2="96" y2="92" stroke="#9e7a8c" stroke-width="2.2" marker-end="url(#ar)"/>
+  <line x1="184" y1="108" x2="184" y2="92" stroke="#9e7a8c" stroke-width="2.2" marker-end="url(#ar)"/>
+  <!-- naso -->
+  <path d="M136 118 Q132 128 128 132 Q140 136 152 132 Q148 128 144 118" fill="none" stroke="#c4a080" stroke-width="1.2"/>
+  <!-- label -->
+  <rect x="90" y="58" width="100" height="16" rx="3" fill="#9e7a8c" opacity=".85"/>
+  <text x="140" y="69" text-anchor="middle" font-size="8.5" fill="white" font-family="sans-serif" font-weight="bold">GUANCE</text>
+  <text x="140" y="194" text-anchor="middle" font-size="9" fill="#9e7a8c" font-family="serif" font-style="italic">sorrido ampio · spingi gli zigomi in su</text>
+</svg>`,
+
+  // 2 Mer — Occhi
+  `<svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,1L7,4L0,7Z" fill="#b07a5c"/></marker></defs>
+  <ellipse cx="140" cy="108" rx="68" ry="80" fill="#ede0d4"/>
+  <!-- zone target: contorno occhi -->
+  <ellipse cx="116" cy="104" rx="26" ry="19" fill="#9e7a8c" opacity=".18"/>
+  <ellipse cx="164" cy="104" rx="26" ry="19" fill="#9e7a8c" opacity=".18"/>
+  <path d="M74 90 Q72 48 140 40 Q208 48 206 90" fill="#c8a882"/>
+  <rect x="122" y="184" width="36" height="20" rx="4" fill="#ede0d4"/>
+  <ellipse cx="72" cy="112" rx="9" ry="13" fill="#e4cfc0"/>
+  <ellipse cx="208" cy="112" rx="9" ry="13" fill="#e4cfc0"/>
+  <!-- sopracciglia -->
+  <path d="M98 88 Q116 81 130 87" fill="none" stroke="#8B6248" stroke-width="2" stroke-linecap="round"/>
+  <path d="M150 87 Q164 81 182 88" fill="none" stroke="#8B6248" stroke-width="2" stroke-linecap="round"/>
+  <!-- occhi -->
+  <ellipse cx="116" cy="104" rx="18" ry="12" fill="white" stroke="#c4a888" stroke-width="1.2"/>
+  <ellipse cx="164" cy="104" rx="18" ry="12" fill="white" stroke="#c4a888" stroke-width="1.2"/>
+  <circle cx="116" cy="104" r="6" fill="#6b4c3b"/>
+  <circle cx="164" cy="104" r="6" fill="#6b4c3b"/>
+  <circle cx="118" cy="102" r="2" fill="white"/>
+  <circle cx="166" cy="102" r="2" fill="white"/>
+  <!-- orbite tratteggiate (percorso cerchio) -->
+  <ellipse cx="116" cy="104" rx="24" ry="18" fill="none" stroke="#9e7a8c" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <ellipse cx="164" cy="104" rx="24" ry="18" fill="none" stroke="#9e7a8c" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <!-- frecce direzione cerchio -->
+  <path d="M116 86 Q94 86 92 104" fill="none" stroke="#b07a5c" stroke-width="2" stroke-linecap="round" marker-end="url(#ar)"/>
+  <path d="M164 86 Q186 86 188 104" fill="none" stroke="#b07a5c" stroke-width="2" stroke-linecap="round" marker-end="url(#ar)"/>
+  <!-- dita indice -->
+  <ellipse cx="90" cy="104" rx="7" ry="5" fill="#e4cfc0" stroke="#c4a888" stroke-width="1"/>
+  <ellipse cx="190" cy="104" rx="7" ry="5" fill="#e4cfc0" stroke="#c4a888" stroke-width="1"/>
+  <!-- naso bocca -->
+  <path d="M136 118 Q132 128 128 132 Q140 136 152 132 Q148 128 144 118" fill="none" stroke="#c4a080" stroke-width="1.2"/>
+  <path d="M122 158 Q140 164 158 158" fill="none" stroke="#c4a080" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- label -->
+  <rect x="78" y="58" width="124" height="16" rx="3" fill="#9e7a8c" opacity=".85"/>
+  <text x="140" y="69" text-anchor="middle" font-size="8.5" fill="white" font-family="sans-serif" font-weight="bold">CONTORNO OCCHI</text>
+  <text x="140" y="194" text-anchor="middle" font-size="9" fill="#9e7a8c" font-family="serif" font-style="italic">cerchi leggeri lungo l'orbita ossea</text>
+</svg>`,
+
+  // 3 Gio — Mascella / Collo
+  `<svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,1L7,4L0,7Z" fill="#9e7a8c"/></marker>
+    <marker id="arl" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M7,1L0,4L7,7Z" fill="#b07a5c"/></marker>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,1L7,4L0,7Z" fill="#b07a5c"/></marker>
+  </defs>
+  <!-- testa inclinata indietro ~15° -->
+  <g transform="rotate(-15, 140, 108)">
+    <ellipse cx="140" cy="108" rx="68" ry="80" fill="#ede0d4"/>
+    <path d="M74 90 Q72 48 140 40 Q208 48 206 90" fill="#c8a882"/>
+    <ellipse cx="72" cy="112" rx="9" ry="13" fill="#e4cfc0"/>
+    <ellipse cx="208" cy="112" rx="9" ry="13" fill="#e4cfc0"/>
+    <!-- zona target: mascella e collo evidenziati -->
+    <path d="M82 154 Q140 178 198 154 L198 168 Q140 195 82 168 Z" fill="#9e7a8c" opacity=".22"/>
+    <!-- sopracciglia -->
+    <path d="M100 86 Q116 79 130 85" fill="none" stroke="#8B6248" stroke-width="2" stroke-linecap="round"/>
+    <path d="M150 85 Q164 79 180 86" fill="none" stroke="#8B6248" stroke-width="2" stroke-linecap="round"/>
+    <!-- occhi -->
+    <ellipse cx="116" cy="100" rx="13" ry="9" fill="white" stroke="#c4a888" stroke-width="1"/>
+    <ellipse cx="164" cy="100" rx="13" ry="9" fill="white" stroke="#c4a888" stroke-width="1"/>
+    <circle cx="116" cy="100" r="5" fill="#6b4c3b"/>
+    <circle cx="164" cy="100" r="5" fill="#6b4c3b"/>
+    <!-- naso -->
+    <path d="M136 114 Q132 124 128 128 Q140 132 152 128 Q148 124 144 114" fill="none" stroke="#c4a080" stroke-width="1.2"/>
+    <!-- bocca leggermente aperta -->
+    <path d="M122 152 Q140 160 158 152" fill="none" stroke="#c4a080" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- collo -->
+    <rect x="122" y="184" width="36" height="22" rx="4" fill="#e4cfc0"/>
+  </g>
+  <!-- freccia testa indietro -->
+  <path d="M206 55 Q230 42 232 72" fill="none" stroke="#9e7a8c" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#ar)"/>
+  <text x="236" y="40" text-anchor="middle" font-size="8" fill="#9e7a8c" font-family="sans-serif">↑ indietro</text>
+  <!-- frecce mascella sx-dx -->
+  <line x1="68" y1="172" x2="50" y2="172" stroke="#b07a5c" stroke-width="2" marker-end="url(#arl)"/>
+  <line x1="68" y1="172" x2="86" y2="172" stroke="#b07a5c" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- label -->
+  <rect x="72" y="14" width="136" height="16" rx="3" fill="#9e7a8c" opacity=".85"/>
+  <text x="140" y="25" text-anchor="middle" font-size="8.5" fill="white" font-family="sans-serif" font-weight="bold">MASCELLA · COLLO</text>
+  <text x="140" y="196" text-anchor="middle" font-size="9" fill="#9e7a8c" font-family="serif" font-style="italic">testa indietro · mascella lenta ← →</text>
+</svg>`,
+
+  // 4 Ven — Labbra
+  `<svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arl" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M7,1L0,4L7,7Z" fill="#9e7a8c"/></marker>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,1L7,4L0,7Z" fill="#9e7a8c"/></marker>
+  </defs>
+  <ellipse cx="140" cy="108" rx="68" ry="80" fill="#ede0d4"/>
+  <!-- zona target: labbra -->
+  <ellipse cx="140" cy="152" rx="30" ry="20" fill="#9e7a8c" opacity=".18"/>
+  <path d="M74 90 Q72 48 140 40 Q208 48 206 90" fill="#c8a882"/>
+  <rect x="122" y="184" width="36" height="20" rx="4" fill="#ede0d4"/>
+  <ellipse cx="72" cy="112" rx="9" ry="13" fill="#e4cfc0"/>
+  <ellipse cx="208" cy="112" rx="9" ry="13" fill="#e4cfc0"/>
+  <!-- sopracciglia -->
+  <path d="M100 88 Q116 81 130 87" fill="none" stroke="#8B6248" stroke-width="2" stroke-linecap="round"/>
+  <path d="M150 87 Q164 81 180 88" fill="none" stroke="#8B6248" stroke-width="2" stroke-linecap="round"/>
+  <!-- occhi -->
+  <ellipse cx="116" cy="104" rx="13" ry="9" fill="white" stroke="#c4a888" stroke-width="1"/>
+  <ellipse cx="164" cy="104" rx="13" ry="9" fill="white" stroke="#c4a888" stroke-width="1"/>
+  <circle cx="116" cy="104" r="5" fill="#6b4c3b"/>
+  <circle cx="164" cy="104" r="5" fill="#6b4c3b"/>
+  <!-- naso -->
+  <path d="M136 118 Q132 128 128 132 Q140 136 152 132 Q148 128 144 118" fill="none" stroke="#c4a080" stroke-width="1.2"/>
+  <!-- labbra arricciate a bacio -->
+  <ellipse cx="140" cy="152" rx="20" ry="15" fill="#f0c8c0" stroke="#c4908a" stroke-width="2"/>
+  <path d="M120 152 Q140 144 160 152" fill="#d0a098" opacity=".5"/>
+  <!-- cerchio tratteggiato zona tensione -->
+  <ellipse cx="140" cy="152" rx="28" ry="22" fill="none" stroke="#9e7a8c" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <!-- frecce arricciamento -->
+  <line x1="118" y1="152" x2="100" y2="152" stroke="#9e7a8c" stroke-width="2" marker-end="url(#arl)"/>
+  <line x1="162" y1="152" x2="180" y2="152" stroke="#9e7a8c" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- label -->
+  <rect x="90" y="58" width="100" height="16" rx="3" fill="#9e7a8c" opacity=".85"/>
+  <text x="140" y="69" text-anchor="middle" font-size="8.5" fill="white" font-family="sans-serif" font-weight="bold">LABBRA</text>
+  <text x="140" y="194" text-anchor="middle" font-size="9" fill="#9e7a8c" font-family="serif" font-style="italic">arriccia le labbra · tieni 5 s · rilascia</text>
+</svg>`,
+
+  // 5 Sab — Collo / Allungamento
+  `<svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,1L7,4L0,7Z" fill="#9e7a8c"/></marker></defs>
+  <!-- testa inclinata di lato ~20° -->
+  <g transform="rotate(20, 140, 100)">
+    <ellipse cx="140" cy="100" rx="65" ry="76" fill="#ede0d4"/>
+    <path d="M78 82 Q76 42 140 34 Q204 42 202 82" fill="#c8a882"/>
+    <ellipse cx="76" cy="104" rx="9" ry="13" fill="#e4cfc0"/>
+    <ellipse cx="204" cy="104" rx="9" ry="13" fill="#e4cfc0"/>
+    <!-- zona target: lato collo sx evidenziato -->
+    <path d="M78 130 Q90 170 118 184 L122 184 Q94 170 86 130 Z" fill="#9e7a8c" opacity=".28"/>
+    <!-- sopracciglia -->
+    <path d="M102 84 Q118 77 132 83" fill="none" stroke="#8B6248" stroke-width="2" stroke-linecap="round"/>
+    <path d="M148 83 Q162 77 178 84" fill="none" stroke="#8B6248" stroke-width="2" stroke-linecap="round"/>
+    <!-- occhi -->
+    <ellipse cx="118" cy="98" rx="12" ry="8" fill="white" stroke="#c4a888" stroke-width="1"/>
+    <ellipse cx="162" cy="98" rx="12" ry="8" fill="white" stroke="#c4a888" stroke-width="1"/>
+    <circle cx="118" cy="98" r="4.5" fill="#6b4c3b"/>
+    <circle cx="162" cy="98" r="4.5" fill="#6b4c3b"/>
+    <!-- naso bocca -->
+    <path d="M136 112 Q132 120 128 124 Q140 128 152 124 Q148 120 144 112" fill="none" stroke="#c4a080" stroke-width="1.2"/>
+    <path d="M122 148 Q140 155 158 148" fill="none" stroke="#c4a080" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- collo -->
+    <rect x="124" y="172" width="32" height="22" rx="4" fill="#e4cfc0"/>
+    <!-- spalle accennate -->
+    <path d="M75 186 Q108 178 124 182" fill="none" stroke="#c4a888" stroke-width="2"/>
+    <path d="M205 186 Q172 178 156 182" fill="none" stroke="#c4a888" stroke-width="2"/>
+  </g>
+  <!-- freccia che indica allungamento lato sinistro -->
+  <path d="M48 90 Q28 125 40 162" fill="none" stroke="#9e7a8c" stroke-width="2.2" stroke-dasharray="5,3" marker-end="url(#ar)"/>
+  <text x="22" y="85" font-size="8" fill="#9e7a8c" font-family="sans-serif" text-anchor="middle">allungamento</text>
+  <!-- label -->
+  <rect x="80" y="14" width="140" height="16" rx="3" fill="#9e7a8c" opacity=".85"/>
+  <text x="150" y="25" text-anchor="middle" font-size="8.5" fill="white" font-family="sans-serif" font-weight="bold">COLLO · PLATISMA</text>
+  <text x="140" y="196" text-anchor="middle" font-size="9" fill="#9e7a8c" font-family="serif" font-style="italic">inclina verso la spalla · 20 s per lato</text>
+</svg>`,
+
+  // 6 Dom — Lion's breath
+  `<svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,1L7,4L0,7Z" fill="#9e7a8c"/></marker></defs>
+  <ellipse cx="140" cy="106" rx="68" ry="80" fill="#ede0d4"/>
+  <!-- zona target: viso intero -->
+  <ellipse cx="140" cy="106" rx="60" ry="72" fill="#9e7a8c" opacity=".10"/>
+  <path d="M74 88 Q72 46 140 38 Q208 46 206 88" fill="#c8a882"/>
+  <rect x="122" y="182" width="36" height="20" rx="4" fill="#ede0d4"/>
+  <ellipse cx="72" cy="110" rx="9" ry="13" fill="#e4cfc0"/>
+  <ellipse cx="208" cy="110" rx="9" ry="13" fill="#e4cfc0"/>
+  <!-- sopracciglia tese in basso (espressione intensa) -->
+  <path d="M98 84 Q116 79 130 86" fill="none" stroke="#8B6248" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M150 86 Q164 79 182 84" fill="none" stroke="#8B6248" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- occhi spalancati -->
+  <ellipse cx="116" cy="100" rx="16" ry="13" fill="white" stroke="#c4a888" stroke-width="1.2"/>
+  <ellipse cx="164" cy="100" rx="16" ry="13" fill="white" stroke="#c4a888" stroke-width="1.2"/>
+  <circle cx="116" cy="100" r="7" fill="#6b4c3b"/>
+  <circle cx="164" cy="100" r="7" fill="#6b4c3b"/>
+  <circle cx="118" cy="97" r="2.5" fill="white"/>
+  <circle cx="166" cy="97" r="2.5" fill="white"/>
+  <!-- naso -->
+  <path d="M136 116 Q132 126 128 130 Q140 134 152 130 Q148 126 144 116" fill="none" stroke="#c4a080" stroke-width="1.2"/>
+  <!-- bocca spalancata -->
+  <ellipse cx="140" cy="154" rx="26" ry="20" fill="white" stroke="#c4908a" stroke-width="2"/>
+  <ellipse cx="140" cy="146" rx="26" ry="12" fill="#f0c0b0" opacity=".5"/>
+  <!-- lingua fuori -->
+  <path d="M126 160 Q140 180 154 160" fill="#d08880" stroke="#b07060" stroke-width="1.2"/>
+  <!-- frecce espiro -->
+  <line x1="140" y1="177" x2="140" y2="192" stroke="#9e7a8c" stroke-width="2" marker-end="url(#ar)"/>
+  <line x1="122" y1="173" x2="110" y2="186" stroke="#9e7a8c" stroke-width="1.8" marker-end="url(#ar)"/>
+  <line x1="158" y1="173" x2="170" y2="186" stroke="#9e7a8c" stroke-width="1.8" marker-end="url(#ar)"/>
+  <!-- label -->
+  <rect x="76" y="14" width="128" height="16" rx="3" fill="#9e7a8c" opacity=".85"/>
+  <text x="140" y="25" text-anchor="middle" font-size="8.5" fill="white" font-family="sans-serif" font-weight="bold">VISO COMPLETO</text>
+  <text x="140" y="196" text-anchor="middle" font-size="9" fill="#9e7a8c" font-family="serif" font-style="italic">inspira · apri bocca · espira "haaah"</text>
+</svg>`
+
+];
+
+const YOGA = [
+  {name:'Levigatore della Fronte',zona:'Fronte · Muscolo frontale',steps:['Posiziona entrambe le mani piatte sulla fronte, dita verso il centro.','Fai scivolare le mani verso le tempie con leggera pressione verso l\'esterno.','Contemporaneamente alza le sopracciglia come se fossi sorpresa, resistendo con le dita.','Tieni 3 secondi, rilascia lentamente.'],reps:'8–10 ripetizioni · 30–60 secondi totali'},
+  {name:'Sollevatore delle Guance',zona:'Guance · Muscolo zigomatico',steps:['Sorridi ampiamente mostrando i denti — il più grande possibile.','Posiziona i polpastrelli sugli zigomi.','Spingi leggermente verso l\'alto mantenendo il sorriso.','Tieni 5 secondi sentendo la tensione sulle guance.'],reps:'6–8 ripetizioni · 45 secondi totali'},
+  {name:'Cerchi del Contorno Occhi',zona:'Contorno occhi · Muscolo orbicolare',steps:['Posiziona i polpastrelli degli indici agli angoli esterni degli occhi.','Con pressione minima, segui l\'orbita ossea dal basso verso l\'alto.','Completa il cerchio sopra il sopracciglio e torna all\'angolo interno.','Non tirare mai la pelle — questo tessuto è sottilissimo.'],reps:'5 cerchi per lato · ripeti 3 volte'},
+  {name:'Rilascio della Mascella',zona:'Mascella · Collo · Platisma',steps:['Siediti diritta. Inclina la testa leggermente all\'indietro fissando il soffitto.','Premi la lingua al palato e deglutisci lentamente — senti il collo allungarsi.','Abbassa il mento e muovi la mascella da sinistra a destra 5 volte lentamente.','Torna alla posizione neutra e respira.'],reps:'Sequenza × 5 · 1 minuto totale'},
+  {name:'Il Bacio della Carpa',zona:'Labbra · Muscolo orbicolare della bocca',steps:['Rilassa il viso e guarda dritto davanti a te.','Arriccia le labbra come se stessi applicando un rossetto, ben chiuse e pronunciate.','Tieni 5 secondi sentendo la tensione attorno alla bocca.','Rilascia e sorridi brevemente per alternare tensione e rilassamento.'],reps:'8 ripetizioni · 45 secondi totali'},
+  {name:'Allungamento del Collo',zona:'Collo · Muscoli SCM e platisma',steps:['Siediti dritta. Inclina lentamente la testa verso la spalla destra.','Porta il mento leggermente su per allungare il lato sinistro del collo.','Tieni 20 secondi respirando regolarmente, poi cambia lato.','Bonus: abbassa il labbro inferiore mostrando i denti e tieni 10 secondi.'],reps:'2 lati × 20 s + platisma 3 × 10 s'},
+  {name:'Il Respiro del Leone',zona:'Viso completo · Rilascio tensione',steps:['Inspira profondamente dal naso.','Apri la bocca il più possibile, allunga la lingua verso il mento.','Espira con forza con un suono "haaah" prolungato.','Senti tutti i muscoli del viso rilasciarsi. Torna all\'espressione neutra.'],reps:'5 cicli · pausa di 10 s tra ogni ciclo'},
+];
+
+const DS = ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'];
+const DF = ['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato','Domenica'];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────────────────────
+let chk = {}, notes = {}, openSecs = {}, customNames = {};
+try{chk=JSON.parse(localStorage.getItem('sk_chk')||'{}');}catch(e){}
+try{notes=JSON.parse(localStorage.getItem('sk_notes')||'{}');}catch(e){}
+try{openSecs=JSON.parse(localStorage.getItem('sk_secs')||'{}');}catch(e){}
+try{customNames=JSON.parse(localStorage.getItem('sk_names')||'{}');}catch(e){}
+
+function saveChk(){try{localStorage.setItem('sk_chk',JSON.stringify(chk));}catch(e){}}
+function saveNotes(){try{localStorage.setItem('sk_notes',JSON.stringify(notes));}catch(e){}}
+function saveSecs(){try{localStorage.setItem('sk_secs',JSON.stringify(openSecs));}catch(e){}}
+function saveNames(){try{localStorage.setItem('sk_names',JSON.stringify(customNames));}catch(e){}}
+
+let day = new Date().getDay(); day = day===0?6:day-1;
+// default: all sections open
+function isSectionOpen(id){ return openSecs[id] !== false; }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────────────────────────────────────────
+function tlabel(k){return{retinoid:'Retinoid',glycolic:'Glicolico',peptide:'Peptidi',spf:'SPF',capelli:'Capelli',rose:'Rose'}[k]||k;}
+
+function renderStep(s,key,num){
+  const done=!!chk[key];
+  const info=INFO[s.k];
+  const displayName = customNames[s.k] || s.n;
+  const tags=(s.tags||[]).map(t=>`<span class="stag tag-${t}">${tlabel(t)}</span>`).join('');
+  const tim=s.t?`<span class="timing">${s.t}</span>`:'';
+  const hasNote = s.k && notes[s.k] && notes[s.k].trim().length > 0;
+  const noteLabel = hasNote ? `<span class="note-label">✎ nota</span>` : '';
+  const sub=info?`<div class="ssub">${info.qty} · tocca per dettagli</div>`:'';
+  return `<div class="step ${done?'done':''}">
+    <span class="snum">${num}</span>
+    <div class="chk" onclick="tog('${key}')"></div>
+    <div class="si" onclick="${info?`openSheet('${s.k}')`:`tog('${key}')`}">
+      <div class="snr"><span class="sn">${displayName}</span>${tim}${tags}${noteLabel}</div>${sub}
+    </div>
+  </div>`;
+}
+
+function progBar(done,total){
+  const p=total?Math.round(done/total*100):0;
+  return `<div class="prog"><div class="pbg"><div class="pfi" style="width:${p}%"></div></div><div class="plb">${done} / ${total} completati</div></div>`;
+}
+
+function evBadge(d){return[0,2,4].includes(d)?'Retinoid':[3,6].includes(d)?'Glicolico':'Base';}
+
+function makeCard(id,iconEmoji,title,badgeClass,badgeText,bodyHtml){
+  const open=isSectionOpen(id);
+  return `<div class="card ${open?'':'shut'}" id="card-${id}">
+    <div class="card-hd" onclick="toggleCard('${id}')">
+      <span class="icon">${iconEmoji}</span>
+      <span class="title">${title}</span>
+      <span class="badge ${badgeClass}">${badgeText}</span>
+      <span class="chevron">›</span>
+    </div>
+    <div class="card-body">${bodyHtml}</div>
+  </div>`;
+}
+
+function renderAll(){
+  const eve=E[day];
+  const mK=M.map((_,i)=>`${day}-m-${i}`);
+  const eK=eve.map((_,i)=>`${day}-e-${i}`);
+  const hK=`${day}-h`;
+  const mD=mK.filter(k=>chk[k]).length;
+  const eD=eK.filter(k=>chk[k]).length;
+  const hD=chk[hK]?1:0;
+  const total=M.length+eve.length+1;
+  const done=mD+eD+hD;
+  const y=YOGA[day];
+
+  const morningBody=`<div class="steps">${M.map((s,i)=>renderStep(s,`${day}-m-${i}`,i+1)).join('')}</div>${progBar(mD,M.length)}`;
+  const eveningBody=`<div class="steps">${eve.map((s,i)=>renderStep(s,`${day}-e-${i}`,i+1)).join('')}</div>${progBar(eD,eve.length)}`;
+  const hairBody=`<div class="steps">${renderStep(HAIR,hK,1)}</div>`;
+  const tipBody=`<div class="tip-bd"><div class="tip-tx">${TIPS[day]}</div></div>`;
+  const yogaBody=`<div class="yoga-bd">
+    <div class="yna">${y.name}</div>
+    <div class="yzo">${y.zona}</div>
+    <div class="yill">${Y_SVG[day]}</div>
+    <ul class="ysteps">${y.steps.map((s,i)=>`<li data-n="${i+1}.">${s}</li>`).join('')}</ul>
+    <span class="yreps">⏱ ${y.reps}</span>
+  </div>`;
+
+  document.getElementById('content').innerHTML =
+    makeCard(`${day}-m`,'☀️','Mattina','bm','Tutti i giorni',morningBody)+
+    makeCard(`${day}-e`,'🌙',`Sera · ${DF[day]}`,'be',evBadge(day),eveningBody)+
+    makeCard(`${day}-h`,'💆','Capelli','','Ogni sera',hairBody)+
+    makeCard(`${day}-tip`,'💡','Consiglio del giorno','bt','Pelle',tipBody)+
+    makeCard(`${day}-yoga`,'🧘','Yoga del Viso','by','Face yoga',yogaBody)+
+    `<div class="congrats ${done===total?'show':''}">Routine completata ✦ Brava!</div>`;
+}
+
+function renderDays(){
+  document.getElementById('daySel').innerHTML=DS.map((d,i)=>
+    `<button class="db ${i===day?'on':''}" onclick="setDay(${i})">${d}</button>`
+  ).join('');
+}
+
+function setDay(i){day=i;renderDays();renderAll();}
+function tog(k){chk[k]=!chk[k];saveChk();renderAll();}
+function resetDay(){
+  Object.keys(chk).filter(k=>k.startsWith(day+'-')).forEach(k=>delete chk[k]);
+  saveChk();
+  // rimuovi le chiavi così isSectionOpen ritorna true (default)
+  [`${day}-m`,`${day}-e`,`${day}-h`,`${day}-tip`,`${day}-yoga`].forEach(id=>{ delete openSecs[id]; });
+  saveSecs();
+  renderAll();
+}
+
+function toggleCard(id){
+  const c=document.getElementById('card-'+id);
+  const wasOpen=!c.classList.contains('shut');
+  c.classList.toggle('shut',wasOpen);
+  openSecs[id]=!wasOpen;
+  saveSecs();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SHEET
+// ─────────────────────────────────────────────────────────────────────────────
+let currentSheetKey = null;
+
+function openSheet(k){
+  const d=INFO[k]; if(!d) return;
+  currentSheetKey = k;
+  const tags=(d.tags||[]).map(t=>`<span class="stag tag-${t.k}" style="font-size:.58rem;padding:.18rem .45rem">${t.l}</span>`).join('');
+  const noteVal = notes[k]||'';
+  const nameVal = customNames[k]||d.n;
+  const isCustom = !!customNames[k];
+  document.getElementById('shBody').innerHTML=`
+    <div class="shbl" style="padding-bottom:.8rem;margin-bottom:.8rem;border-bottom:1px dashed var(--warm)">
+      <div class="shla">Nome voce</div>
+      <input class="title-input" id="titleInput" type="text" value="${nameVal.replace(/"/g,'&quot;')}" oninput="saveName()" placeholder="${d.n}"/>
+      ${isCustom?`<span class="title-reset" onclick="resetName()">↺ ripristina nome originale</span>`:''}
+    </div>
+    <div class="shta">${tags}</div>
+    <div class="shbl"><div class="shla">Quantità</div><div class="shqt">${d.qty}</div></div>
+    <div class="shbl"><div class="shla">Come applicare</div><div class="shtx">${d.come}</div></div>
+    <div class="shbl"><div class="shla">Consiglio</div><div class="shtx">${d.cons}</div></div>
+    <div class="shbl">
+      <div class="shla">Le mie note</div>
+      <div class="notes-wrap">
+        <textarea class="notes-ta" id="noteTa" placeholder="Aggiungi una nota personale…" oninput="saveNote()">${noteVal}</textarea>
+        <div class="notes-saved" id="noteSaved">✓ salvato</div>
+      </div>
+    </div>
+  `;
+  document.getElementById('ov').classList.add('open');
+}
+
+let noteSaveTimer = null;
+function saveName(){
+  const inp = document.getElementById('titleInput');
+  if(!inp || !currentSheetKey) return;
+  const d = INFO[currentSheetKey];
+  const val = inp.value.trim();
+  if(val && val !== d.n){ customNames[currentSheetKey]=val; }
+  else { delete customNames[currentSheetKey]; }
+  saveNames();
+  renderAll();
+}
+function resetName(){
+  if(!currentSheetKey) return;
+  delete customNames[currentSheetKey];
+  saveNames();
+  openSheet(currentSheetKey); // riapre aggiornato
+  renderAll();
+}
+function saveNote(){
+  const ta = document.getElementById('noteTa');
+  if(!ta || !currentSheetKey) return;
+  notes[currentSheetKey] = ta.value;
+  saveNotes();
+  clearTimeout(noteSaveTimer);
+  const el = document.getElementById('noteSaved');
+  if(el){ el.classList.add('show'); noteSaveTimer=setTimeout(()=>{ el.classList.remove('show'); renderAll(); },1800); }
+}
+
+function closeSheet(){document.getElementById('ov').classList.remove('open');currentSheetKey=null;}
+function maybeClose(e){if(e.target===document.getElementById('ov'))closeSheet();}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PWA
+// ─────────────────────────────────────────────────────────────────────────────
+const svgIcon=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#f5f0eb"/><circle cx="256" cy="230" r="130" fill="#f0e0d0"/><path d="M256 130 C256 130 200 170 200 220 A56 56 0 0 0 312 220 C312 170 256 130 256 130Z" fill="#c8957a"/><path d="M256 130 C230 155 195 195 200 220 A56 56 0 0 0 256 274 C256 274 230 220 256 130Z" fill="#b07a5c"/><path d="M178 175 C155 160 128 175 128 200 A56 56 0 0 0 218 238 C218 238 175 215 178 175Z" fill="#d4a898" opacity=".85"/><path d="M334 175 C357 160 384 175 384 200 A56 56 0 0 0 294 238 C294 238 337 215 334 175Z" fill="#d4a898" opacity=".85"/><path d="M178 285 C155 300 145 330 165 348 A56 56 0 0 0 240 300 C240 300 190 308 178 285Z" fill="#d4a898" opacity=".8"/><path d="M334 285 C357 300 367 330 347 348 A56 56 0 0 0 272 300 C272 300 322 308 334 285Z" fill="#d4a898" opacity=".8"/><circle cx="256" cy="222" r="28" fill="#b07a5c"/><circle cx="256" cy="222" r="16" fill="#c8957a"/><circle cx="248" cy="216" r="6" fill="#f0e0d0" opacity=".5"/><path d="M220 360 Q240 340 256 370 Q272 340 292 360 Q278 390 256 395 Q234 390 220 360Z" fill="#8a9e7a" opacity=".7"/><path d="M256 370 L256 410" stroke="#8a9e7a" stroke-width="8" stroke-linecap="round" opacity=".6"/></svg>`;
+const blob=new Blob([JSON.stringify({name:'La Mia Routine',short_name:'Routine',display:'standalone',background_color:'#f5f0eb',theme_color:'#f5f0eb',icons:[{src:'data:image/svg+xml;base64,'+btoa(svgIcon),sizes:'512x512',type:'image/svg+xml'}]})],{type:'application/json'});
+document.getElementById('manifestLink').href=URL.createObjectURL(blob);
+document.getElementById('appIcon').href='data:image/svg+xml;base64,'+btoa(svgIcon);
+
+// ─────────────────────────────────────────────────────────────────────────────
+renderDays();
+renderAll();
+</script>
+</body>
+</html>
