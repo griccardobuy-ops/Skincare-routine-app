@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Mia Routine v4.3</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="La Mia Routine">
+<meta name="theme-color" content="#f5f0eb">
+<link rel="apple-touch-icon" id="appIcon">
+<link rel="manifest" id="manifestLink">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:       #141210;
+  --bg2:      #1c1916;
+  --bg3:      #242018;
+  --line:     #2e2a24;
+  --muted:    #5a5248;
+  --sub:      #7a7068;
+  --text:     #f0ead8;
+  --textsoft: #c8bfaa;
+  --gold:     #c8a84a;
+  --gold2:    #e8c86a;
+  --golddim:  #3a3020;
+  --mc:#a07830;--ec:#6a5a8e;--tc:#5a7a6a;--yc:#7a5a80;--wc:#4a6a8a;--bc:#5a7a5a;--bb:#4a7a6a;
+  --cream:#f0ead8;--warm:#2e2a24;--sand:#5a5248;--terracotta:#c8a84a;--deep:#f0ead8;
+}
+/* ── TEMA CHIARO ── */
+body.light{
+  --bg:       #f5f0eb;
+  --bg2:      #ffffff;
+  --bg3:      #e8ddd2;
+  --line:     #e0d4c4;
+  --muted:    #c9b8a4;
+  --sub:      #a09080;
+  --text:     #3d2b1f;
+  --textsoft: #5a4030;
+  --gold:     #b07a5c;
+  --gold2:    #c89070;
+  --golddim:  #f5ece6;
+  --mc:#e8b850;--ec:#8c7a9e;--tc:#7a9e8c;--yc:#9e7a8c;--wc:#7a8e9e;
+  --cream:#f5f0eb;--warm:#e8ddd2;--sand:#c9b8a4;--terracotta:#b07a5c;--deep:#3d2b1f;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Mono',monospace;
+  min-height:100vh;
+  padding:1.5rem 1rem 5rem;
+}
+
+/* ─ HEADER ─ */
+header{
+  text-align:center;
+  margin-bottom:2rem;
+  padding-bottom:1.5rem;
+  border-bottom:1px solid var(--line);
+}
+h1{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;color:var(--text);}
+h1 em{font-style:italic;color:var(--gold);}
+.sub{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:.35rem;}
+
+/* ─ DAY SELECTOR ─ */
+.days{display:flex;gap:.4rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.8rem;}
+.db{
+  background:none;border:1px solid var(--line);color:var(--muted);
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.4rem .75rem;cursor:pointer;border-radius:2px;transition:all .2s;
+}
+.db.on{background:var(--gold);border-color:var(--gold);color:#0a0a0a;font-weight:600;}
+.db:hover:not(.on){border-color:var(--gold);color:var(--gold);}
+
+/* ─ ACCORDION CARD ─ */
+.card{
+  background:var(--bg2);
+  border:1px solid var(--line);
+  border-radius:6px;
+  margin-bottom:.7rem;
+  overflow:hidden;
+}
+.card-hd{
+  display:flex;align-items:center;gap:.65rem;
+  padding:.85rem 1.1rem;
+  background:var(--bg3);
+  cursor:pointer;user-select:none;
+  transition:background .15s;
+}
+.card-hd:hover{background:#2a2620;}
+.card-hd .icon{font-size:.95rem;}
+.card-hd .title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:var(--text);}
+.badge{
+  margin-left:auto;font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.18rem .5rem;border-radius:2px;color:rgba(255,255,255,.8);
+  background:var(--muted);white-space:nowrap;
+}
+.bm{background:var(--mc);}
+.be{background:var(--ec);}
+.bt{background:var(--tc);}
+.by{background:var(--yc);}
+.bw{background:var(--wc);}
+.chevron{font-size:.65rem;color:var(--muted);margin-left:.3rem;transition:transform .25s;flex-shrink:0;}
+.card.shut .chevron{transform:rotate(-90deg);}
+.card-body{overflow:hidden;transition:max-height .32s ease,opacity .25s ease;max-height:3000px;opacity:1;}
+.card.shut .card-body{max-height:0;opacity:0;}
+
+/* ─ STEPS ─ */
+.steps{padding:.3rem 0;}
+.step{
+  display:flex;align-items:flex-start;gap:.7rem;
+  padding:.6rem 1.1rem;
+  border-bottom:1px solid var(--line);
+  transition:background .12s;
+}
+.step:last-child{border-bottom:none;}
+.step:hover{background:rgba(255,255,255,.02);}
+.snum{font-size:.5rem;color:var(--muted);min-width:.9rem;text-align:right;flex-shrink:0;padding-top:3px;}
+.chk{
+  width:17px;height:17px;
+  border:1.5px solid var(--muted);
+  border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;margin-top:1px;
+}
+.step.done .chk{background:var(--gold);border-color:var(--gold);}
+.step.done .chk::after{
+  content:'';width:5px;height:3px;
+  border-left:1.5px solid #0a0a0a;
+  border-bottom:1.5px solid #0a0a0a;
+  transform:rotate(-45deg) translateY(-1px);
+}
+.si{flex:1;cursor:pointer;min-width:0;}
+.snr{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;}
+.sn{
+  font-size:.72rem;line-height:1.4;color:var(--text);
+  border-bottom:1px dashed transparent;
+  transition:border-color .15s,color .15s;
+}
+.si:hover .sn{color:var(--gold);border-bottom-color:var(--gold);}
+.step.done .sn{text-decoration:line-through;color:var(--muted);}
+.ssub{font-size:.54rem;color:var(--sub);font-style:italic;margin-top:.12rem;}
+.timing{
+  display:inline-block;font-size:.46rem;letter-spacing:.06em;text-transform:uppercase;
+  background:var(--golddim);color:var(--gold);
+  border:1px solid #4a3a10;
+  padding:.08rem .35rem;border-radius:2px;flex-shrink:0;
+}
+.stag{font-size:.46rem;letter-spacing:.08em;text-transform:uppercase;padding:.1rem .35rem;border-radius:2px;flex-shrink:0;}
+.tag-retinoid{background:#2a1f30;color:#b088c0;}
+.tag-glycolic{background:#1a2820;color:#70a888;}
+.tag-peptide {background:#2a2018;color:var(--gold);}
+.tag-spf     {background:#2a2810;color:#b8a840;}
+.tag-capelli {background:#1e1e2e;color:#8888c0;}
+.tag-rose    {background:#2a1820;color:#c07888;}
+
+/* ─ PROGRESS ─ */
+.prog{padding:0 1.1rem .75rem;}
+.pbg{height:2px;background:var(--line);border-radius:2px;overflow:hidden;}
+.pfi{height:100%;background:var(--gold);border-radius:2px;transition:width .4s;}
+.plb{font-size:.5rem;color:var(--muted);letter-spacing:.1em;margin-top:.3rem;}
+
+/* ─ TIP ─ */
+.tip-hd{background:#1a1e20;}
+.tip-bd{padding:1rem 1.1rem;}
+.tip-tx{font-size:.72rem;line-height:1.8;color:var(--textsoft);}
+
+/* ─ YOGA ─ */
+.yoga-hd{background:#1e1a20;}
+.yoga-bd{padding:1rem 1.1rem;}
+.yna{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;color:var(--text);margin-bottom:.2rem;}
+.yzo{font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--yc);margin-bottom:.85rem;}
+.yill{width:100%;background:#1a1612;border-radius:6px;margin-bottom:.9rem;padding:.6rem;display:flex;align-items:center;justify-content:center;}
+.yill svg{width:100%;max-width:260px;height:auto;display:block;margin:0 auto;}
+.ysteps{list-style:none;margin-bottom:.7rem;}
+.ysteps li{font-size:.68rem;line-height:1.65;padding:.22rem 0;border-bottom:1px solid var(--line);display:flex;gap:.5rem;color:var(--textsoft);}
+.ysteps li:last-child{border-bottom:none;}
+.ysteps li::before{content:attr(data-n);color:var(--yc);font-size:.58rem;flex-shrink:0;padding-top:.1rem;}
+.yreps{display:inline-block;font-size:.56rem;background:var(--golddim);color:var(--yc);padding:.18rem .55rem;border-radius:2px;}
+body.light .yreps{background:#f4eef3;}
+.yvideo{
+  display:inline-flex;align-items:center;gap:.35rem;margin-top:.65rem;
+  font-size:.58rem;color:var(--gold);
+  background:var(--golddim);border:1px solid #4a3a10;
+  padding:.28rem .65rem;border-radius:3px;
+  transition:background .15s;cursor:pointer;
+  font-family:'DM Mono',monospace;letter-spacing:.06em;
+}
+.yvideo:hover{background:#4a3a18;}
+
+/* ─ WORKOUT ─ */
+.wo-hd{background:#1a1e22;}
+.wo-bd{padding:1rem 1.1rem;}
+.wo-type{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--wc);margin-bottom:.3rem;}
+.wo-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;color:var(--text);margin-bottom:.15rem;}
+.wo-meta{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem;}
+.wo-pill{font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;background:#1a2230;color:var(--wc);padding:.12rem .45rem;border-radius:2px;}
+.wo-circuit{background:#1a2230;border-radius:3px;padding:.4rem .7rem;margin-bottom:.7rem;font-size:.56rem;color:var(--wc);letter-spacing:.06em;}
+.wo-exercises{list-style:none;margin-bottom:.7rem;}
+.wo-ex{display:flex;align-items:flex-start;gap:.7rem;padding:.55rem 0;border-bottom:1px solid var(--line);}
+.wo-ex:last-child{border-bottom:none;}
+.wo-ex-num{font-size:.5rem;color:var(--muted);min-width:1rem;text-align:right;flex-shrink:0;padding-top:.15rem;}
+.wo-ex-body{flex:1;cursor:pointer;}
+.wo-ex-name{font-size:.72rem;line-height:1.3;color:var(--text);}
+.wo-ex-detail{font-size:.56rem;color:var(--sub);margin-top:.1rem;font-style:italic;}
+.wo-ex-chk{width:17px;height:17px;border:1.5px solid var(--muted);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;margin-top:1px;}
+.wo-ex.done .wo-ex-chk{background:var(--wc);border-color:var(--wc);}
+.wo-ex.done .wo-ex-chk::after{content:'';width:5px;height:3px;border-left:1.5px solid white;border-bottom:1.5px solid white;transform:rotate(-45deg) translateY(-1px);}
+.wo-ex.done .wo-ex-name{text-decoration:line-through;color:var(--muted);}
+.wo-rest-day{text-align:center;padding:1.5rem 1rem;}
+.wo-rest-icon{font-size:2rem;margin-bottom:.5rem;}
+.wo-rest-tx{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--muted);}
+.wo-rest-sub{font-size:.6rem;color:var(--sub);margin-top:.3rem;}
+.wo-add-btn{
+  display:block;width:100%;margin-top:.8rem;padding:.65rem;
+  background:none;border:1px dashed var(--wc);color:var(--wc);
+  font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;border-radius:2px;transition:all .2s;
+}
+.wo-add-btn:hover{background:var(--wc);color:white;}
+
+/* ─ RULES ─ */
+.rules{
+  background:var(--bg2);border:1px solid var(--line);
+  border-radius:6px;padding:.9rem 1.1rem;margin-bottom:.7rem;
+}
+.rt{font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.65rem;}
+.rule{font-size:.66rem;line-height:1.55;padding:.26rem 0;border-bottom:1px solid var(--line);display:flex;gap:.5rem;color:var(--textsoft);}
+.rule:last-child{border-bottom:none;}
+.rule::before{content:'—';color:var(--muted);flex-shrink:0;}
+
+/* ─ RESET BUTTON ─ */
+.reset{
+  display:block;width:100%;padding:.7rem;
+  background:none;border:1px solid var(--line);color:var(--muted);
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;border-radius:4px;transition:all .2s;margin-top:.5rem;
+}
+.reset:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ─ NOTE GLOBALI ─ */
+.gnotes-hd{background:#181814;}
+.gnotes-bd{padding:1rem 1.1rem;}
+.gnotes-ta{
+  width:100%;min-height:140px;padding:.7rem .8rem;
+  background:#0e0e0c;border:1px solid var(--line);border-radius:4px;
+  font-family:'DM Mono',monospace;font-size:.7rem;line-height:1.75;
+  color:var(--text);resize:vertical;outline:none;transition:border-color .2s;
+}
+.gnotes-ta:focus{border-color:var(--gold);}
+.gnotes-ta::placeholder{color:var(--muted);}
+.gnotes-saved{font-size:.5rem;color:var(--gold);letter-spacing:.08em;margin-top:.3rem;opacity:0;transition:opacity .5s;}
+.gnotes-saved.show{opacity:1;}
+
+/* ─ CONGRATS ─ */
+.congrats{
+  text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.1rem;color:var(--gold);padding:.6rem 0;
+  opacity:0;transition:opacity .5s;pointer-events:none;
+}
+.congrats.show{opacity:1;}
+
+/* ─ SHEET (bottom sheet) ─ */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:flex-end;justify-content:center;}
+.ov.open{display:flex;}
+.sheet{
+  background:var(--bg2);width:100%;max-width:520px;
+  border-radius:14px 14px 0 0;border-top:1px solid var(--line);
+  padding:1.4rem 1.4rem 3rem;max-height:85vh;overflow-y:auto;
+  animation:up .22s ease;
+}
+@keyframes up{from{transform:translateY(28px);opacity:0}to{transform:translateY(0);opacity:1}}
+.sh{width:34px;height:3px;background:var(--muted);border-radius:2px;margin:0 auto 1.2rem;}
+.shn{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:400;margin-bottom:.3rem;color:var(--text);}
+.shta{margin-bottom:1rem;display:flex;gap:.4rem;flex-wrap:wrap;}
+.shbl{margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px solid var(--line);}
+.shbl:last-child{border-bottom:none;margin-bottom:0;}
+.shla{font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem;}
+.shqt{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--gold);}
+.shtx{font-size:.7rem;line-height:1.75;color:var(--textsoft);}
+.shcl{
+  display:block;width:100%;margin-top:1.3rem;padding:.75rem;
+  background:var(--gold);color:#0a0a0a;border:none;
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;border-radius:4px;font-weight:600;
+  transition:background .2s;
+}
+.shcl:hover{background:var(--gold2);}
+
+/* ─ NOTE IN SHEET ─ */
+.notes-wrap{margin-top:.5rem;}
+.notes-ta{
+  width:100%;min-height:80px;padding:.6rem .75rem;
+  background:#0e0e0c;border:1px solid var(--line);border-radius:4px;
+  font-family:'DM Mono',monospace;font-size:.68rem;line-height:1.65;
+  color:var(--text);resize:vertical;outline:none;transition:border-color .2s;
+}
+.notes-ta:focus{border-color:var(--gold);}
+.notes-ta::placeholder{color:var(--muted);}
+.notes-saved{font-size:.5rem;color:var(--gold);letter-spacing:.08em;margin-top:.3rem;opacity:0;transition:opacity .4s;}
+.notes-saved.show{opacity:1;}
+.note-label{
+  display:inline-flex;align-items:center;gap:.25rem;
+  font-size:.46rem;letter-spacing:.07em;text-transform:uppercase;
+  background:#1a2030;color:#6898c0;
+  border:1px solid #2a3848;
+  padding:.1rem .35rem;border-radius:2px;flex-shrink:0;
+}
+.title-input{
+  width:100%;padding:.45rem .6rem;margin-top:.4rem;
+  background:#0e0e0c;border:1px solid var(--line);border-radius:4px;
+  font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--text);
+  outline:none;transition:border-color .2s;
+}
+.title-input:focus{border-color:var(--gold);}
+.title-reset{font-size:.52rem;color:var(--muted);cursor:pointer;margin-top:.25rem;display:inline-block;text-decoration:underline;}
+.title-reset:hover{color:var(--gold);}
+
+/* ─ VIDEO POPUP ─ */
+.vov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;align-items:center;justify-content:center;padding:1.2rem;}
+.vov.open{display:flex;}
+.vpop{background:#0e0c0a;border:1px solid var(--line);border-radius:10px;width:100%;max-width:480px;overflow:hidden;animation:up .22s ease;}
+.vpop-hd{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1rem;border-bottom:1px solid var(--line);}
+.vpop-title{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--text);font-style:italic;flex:1;margin-right:.5rem;}
+.vpop-close{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:.1rem .3rem;line-height:1;}
+.vpop-close:hover{color:var(--text);}
+.vpop-thumb{position:relative;padding-bottom:56.25%;overflow:hidden;background:#111;}
+.vpop-thumb img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:.8;}
+.vpop-thumb .play-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;background:rgba(200,168,74,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+.vpop-thumb .play-icon::after{content:'';border-left:22px solid #0a0a0a;border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:4px;}
+.vpop-actions{padding:.9rem 1rem;}
+.vpop-btn{
+  display:block;text-align:center;padding:.7rem;
+  background:var(--gold);color:#0a0a0a;text-decoration:none;
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+  border-radius:4px;transition:background .15s;font-weight:600;
+}
+.vpop-btn:hover{background:var(--gold2);}
+
+/* ─ WORKOUT SHEET EXTRAS ─ */
+.wo-add-delete{
+  background:none;border:1px dashed #3a2020;color:#885050;
+  font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.5rem .8rem;border-radius:2px;cursor:pointer;width:100%;transition:all .2s;
+}
+.wo-add-delete:hover{background:#3a2020;color:#c08080;}
+
+/* ── TIP INTERATTIVO ── */
+.tip-icon{font-size:1.4rem;margin-bottom:.5rem;}
+.tip-titolo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;color:var(--text);margin-bottom:.5rem;}
+.tip-testo{font-size:.7rem;line-height:1.8;color:var(--textsoft);margin-bottom:.9rem;}
+.tip-citazione{
+  border-left:2px solid var(--gold);padding:.5rem .8rem;
+  margin:.7rem 0;font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:.9rem;color:var(--textsoft);
+}
+.tip-autore{font-size:.52rem;color:var(--muted);letter-spacing:.08em;margin-top:.2rem;font-style:normal;}
+.tip-domanda{
+  background:var(--golddim);border:1px solid #4a3a10;
+  border-radius:4px;padding:.7rem .85rem;
+  font-size:.68rem;line-height:1.65;color:var(--gold);
+  margin:.7rem 0;font-style:italic;
+}
+body.light .tip-domanda{background:#f5ece6;border-color:#e0c8b0;color:#b07a5c;}
+.tip-textarea{
+  width:100%;min-height:80px;padding:.6rem .75rem;margin-top:.5rem;
+  background:var(--bg);border:1px solid var(--line);border-radius:4px;
+  font-family:'DM Mono',monospace;font-size:.68rem;line-height:1.65;
+  color:var(--text);resize:vertical;outline:none;transition:border-color .2s;
+}
+body.light .tip-textarea{background:#faf7f4;}
+.tip-textarea:focus{border-color:var(--gold);}
+.tip-textarea::placeholder{color:var(--muted);}
+/* Timer */
+.tip-intro{font-size:.62rem;color:var(--muted);margin-bottom:.7rem;font-style:italic;}
+.tip-timer{text-align:center;padding:.5rem 0;}
+.tip-fase-label{
+  font-family:'Cormorant Garamond',serif;font-size:1.1rem;
+  color:var(--text);margin-bottom:.3rem;min-height:1.6rem;
+}
+.tip-countdown{
+  font-size:3rem;font-family:'DM Mono',monospace;
+  color:var(--gold);line-height:1;margin:.3rem 0;
+  transition:color .4s;
+}
+.tip-progress-ring{margin:.5rem auto;display:block;}
+.tip-rip{font-size:.55rem;color:var(--muted);letter-spacing:.1em;margin-bottom:.7rem;}
+.tip-avvia{
+  display:inline-block;padding:.6rem 1.4rem;
+  background:var(--gold);color:#0a0a0a;border:none;
+  font-family:'DM Mono',monospace;font-size:.6rem;
+  letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;border-radius:4px;font-weight:600;
+  transition:background .2s;
+}
+.tip-avvia:hover{background:var(--gold2);}
+body.light .tip-avvia{color:white;}
+.tip-avvia:disabled{opacity:.4;cursor:default;}
+
+/* ── TIMER GLOBALE FLOTTANTE ── */
+.ftimer-btn{
+  position:fixed;bottom:1.4rem;right:1.2rem;z-index:400;
+  width:52px;height:52px;border-radius:50%;
+  background:var(--gold);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+  font-size:1.3rem;transition:transform .2s,background .2s;
+}
+.ftimer-btn:hover{transform:scale(1.08);background:var(--gold2);}
+body.light .ftimer-btn{box-shadow:0 4px 20px rgba(0,0,0,.2);}
+.ftimer-btn.done{animation:ftpulse 1s ease-in-out infinite;}
+@keyframes ftpulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(200,168,74,.7), 0 4px 20px rgba(0,0,0,.4);}
+  50%{box-shadow:0 0 0 12px rgba(200,168,74,0), 0 4px 20px rgba(0,0,0,.4);}
+}
+.ftimer-badge{
+  position:absolute;top:-3px;right:-3px;
+  width:16px;height:16px;border-radius:50%;
+  background:#e05040;border:2px solid var(--bg);
+  display:none;
+}
+.ftimer-badge.show{display:block;}
+.ftimer-wrap{position:relative;display:inline-block;}
+
+.ftimer-panel{
+  position:fixed;bottom:5.2rem;right:1.2rem;z-index:400;
+  background:var(--bg2);border:1px solid var(--line);
+  border-radius:12px;padding:1.1rem 1.2rem 1rem;
+  width:200px;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+  display:none;
+  animation:up .2s ease;
+}
+.ftimer-panel.open{display:block;}
+.ftimer-title{
+  font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:.75rem;
+}
+.ftimer-display{
+  font-family:'DM Mono',monospace;font-size:2.6rem;
+  color:var(--text);text-align:center;
+  letter-spacing:.05em;margin-bottom:.7rem;
+  line-height:1;
+}
+.ftimer-display.running{color:var(--gold);}
+.ftimer-display.done{color:#5a8a7a;}
+.ftimer-inputs{
+  display:flex;align-items:center;justify-content:center;
+  gap:.4rem;margin-bottom:.8rem;
+}
+.ftimer-input{
+  width:46px;padding:.3rem .2rem;text-align:center;
+  background:var(--bg);border:1px solid var(--line);border-radius:3px;
+  font-family:'DM Mono',monospace;font-size:.85rem;color:var(--text);
+  outline:none;transition:border-color .2s;
+}
+.ftimer-input:focus{border-color:var(--gold);}
+body.light .ftimer-input{background:#faf7f4;}
+.ftimer-sep{color:var(--muted);font-size:1rem;font-family:'DM Mono',monospace;}
+.ftimer-btns{display:flex;gap:.4rem;}
+.ftimer-action{
+  flex:1;padding:.5rem .2rem;border:none;border-radius:3px;
+  font-family:'DM Mono',monospace;font-size:.52rem;
+  letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;transition:all .2s;font-weight:600;
+}
+.ftimer-start{background:var(--gold);color:#0a0a0a;}
+.ftimer-start:hover{background:var(--gold2);}
+body.light .ftimer-start{color:white;}
+.ftimer-reset{background:var(--bg3);color:var(--muted);border:1px solid var(--line);}
+.ftimer-reset:hover{color:var(--text);}
+.ftimer-label{
+  font-size:.5rem;color:var(--muted);text-align:center;
+  margin-top:.5rem;letter-spacing:.06em;
+}
+
+
+/* ── SEZIONE MENTE ── */
+.brain-hd{background:#1a201a;}
+body.light .brain-hd{background:#eef4ee;}
+.brain-bd{padding:1rem 1.1rem;}
+.brain-type{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bc);margin-bottom:.3rem;}
+.brain-titolo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;color:var(--text);margin-bottom:.5rem;}
+.brain-testo{font-size:.7rem;line-height:1.75;color:var(--textsoft);margin-bottom:.9rem;}
+.brain-esercizio{background:var(--bg3);border:1px solid var(--line);border-radius:6px;padding:.9rem 1rem;margin-bottom:.8rem;}
+body.light .brain-esercizio{background:#f5f8f5;border-color:#ddeedd;}
+.brain-domanda{font-size:.75rem;line-height:1.7;color:var(--text);margin-bottom:.7rem;font-style:italic;}
+.brain-hint-btn{
+  background:none;border:1px solid var(--line);color:var(--muted);
+  font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.4rem .8rem;border-radius:3px;cursor:pointer;transition:all .2s;margin-bottom:.6rem;
+}
+.brain-hint-btn:hover{border-color:var(--bc);color:var(--bc);}
+.brain-hint{font-size:.66rem;color:var(--muted);font-style:italic;display:none;margin-bottom:.6rem;line-height:1.6;}
+.brain-hint.show{display:block;}
+.brain-risposta-wrap{margin-top:.5rem;}
+.brain-risposta-input{
+  width:100%;padding:.5rem .7rem;
+  background:var(--bg);border:1px solid var(--line);border-radius:4px;
+  font-family:'DM Mono',monospace;font-size:.72rem;color:var(--text);
+  outline:none;transition:border-color .2s;
+}
+body.light .brain-risposta-input{background:#faf7f4;}
+.brain-risposta-input:focus{border-color:var(--bc);}
+.brain-check-btn{
+  display:block;width:100%;margin-top:.5rem;padding:.55rem;
+  background:var(--bc);color:white;border:none;
+  font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;border-radius:3px;transition:background .2s;
+}
+.brain-check-btn:hover{filter:brightness(1.15);}
+.brain-feedback{
+  margin-top:.55rem;padding:.5rem .7rem;border-radius:3px;
+  font-size:.68rem;line-height:1.6;display:none;
+}
+.brain-feedback.show{display:block;}
+.brain-feedback.ok{background:#1a2e1a;color:#80c880;border:1px solid #2a4a2a;}
+.brain-feedback.ko{background:#2e1a1a;color:#c88080;border:1px solid #4a2a2a;}
+body.light .brain-feedback.ok{background:#eef8ee;color:#3a7a3a;border-color:#aadaaa;}
+body.light .brain-feedback.ko{background:#f8eeee;color:#7a3a3a;border-color:#daaaaa;}
+.brain-sequence{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.7rem;}
+.brain-seq-item{
+  background:var(--golddim);border:1px solid #4a3a10;
+  color:var(--gold);border-radius:4px;
+  padding:.35rem .6rem;font-family:'DM Mono',monospace;font-size:.8rem;
+  cursor:pointer;transition:all .2s;user-select:none;
+}
+body.light .brain-seq-item{background:#f5ece6;border-color:#e0c8b0;color:#b07a5c;}
+.brain-seq-item.selected{background:var(--bc);color:white;border-color:var(--bc);}
+.brain-seq-answer{display:flex;gap:.4rem;flex-wrap:wrap;min-height:2.2rem;
+  border:1px dashed var(--line);border-radius:4px;padding:.3rem .5rem;margin-bottom:.6rem;
+  align-items:center;}
+.brain-seq-answer .brain-seq-item{font-size:.72rem;}
+.brain-anagram-letters{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.7rem;justify-content:center;}
+.brain-letter{
+  width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  background:var(--bg3);border:1px solid var(--line);border-radius:4px;
+  font-family:'DM Mono',monospace;font-size:1rem;color:var(--text);
+  cursor:pointer;transition:all .2s;font-weight:600;
+}
+body.light .brain-letter{background:#f0f4f0;}
+.brain-letter.used{opacity:.3;cursor:default;}
+.brain-letter-answer{
+  display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.6rem;justify-content:center;
+  min-height:2.5rem;align-items:center;
+  border-bottom:2px solid var(--line);padding-bottom:.4rem;
+}
+.brain-letter-answer .brain-letter{background:var(--golddim);border-color:#4a3a10;}
+body.light .brain-letter-answer .brain-letter{background:#f5ece6;}
+.brain-clear-btn{
+  background:none;border:none;color:var(--muted);font-family:'DM Mono',monospace;
+  font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;
+  text-decoration:underline;margin-bottom:.5rem;display:block;
+}
+/* ── THEME TOGGLE ── */
+.theme-toggle{
+  display:flex;align-items:center;justify-content:center;gap:.6rem;
+  margin-top:1.2rem;padding:.65rem 1rem;
+  background:none;border:1px solid var(--line);
+  border-radius:4px;cursor:pointer;width:100%;
+  font-family:'DM Mono',monospace;font-size:.58rem;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);transition:all .2s;
+}
+.theme-toggle:hover{border-color:var(--gold);color:var(--gold);}
+.theme-toggle .toggle-icon{font-size:1rem;transition:transform .3s;}
+body.light .theme-toggle .toggle-icon{transform:rotate(180deg);}
+
+/* light overrides for hardcoded dark colors */
+body.light .notes-ta,
+body.light .gnotes-ta,
+body.light .title-input{ background:#faf7f4; color:#3d2b1f; border-color:#e0d4c4; }
+body.light .sheet{ background:#f5f0eb; border-color:#e0d4c4; }
+body.light .vpop{ background:#f5f0eb; border-color:#e0d4c4; }
+body.light .vpop-hd{ border-color:#e0d4c4; }
+body.light .vpop-title{ color:#3d2b1f; }
+body.light .vpop-close{ color:#c9b8a4; }
+body.light .vpop-close:hover{ color:#3d2b1f; }
+body.light .vpop-thumb{ background:#e0d4c4; }
+body.light .shcl{ background:#b07a5c; color:white; }
+body.light .shcl:hover{ background:#c89070; }
+body.light .vpop-btn{ background:#b07a5c; color:white; }
+body.light .vpop-btn:hover{ background:#c89070; }
+body.light .vpop-thumb .play-icon{ background:rgba(176,122,92,.9); }
+body.light .vpop-thumb .play-icon::after{ border-left-color:white; }
+body.light .db.on{ background:#b07a5c; border-color:#b07a5c; color:white; }
+body.light .step.done .chk{ background:#b07a5c; border-color:#b07a5c; }
+body.light .step.done .chk::after{ border-color:white; }
+body.light .pfi{ background:#b07a5c; }
+body.light .yill{ background:#f0e8e0; }
+body.light .yill svg rect[fill="#1a1612"],
+body.light .yill svg rect[fill="#fdf8f5"]{ fill:#f0e8e0; }
+
+/* SVG face fills — light theme */
+body.light .yill [fill="#3a2e28"]{ fill:#f5e8d8; }
+body.light .yill [fill="#4a3a30"]{ fill:#e4cfc0; }
+body.light .yill [fill="#6a5040"]{ fill:#c4a882; }
+body.light .yill [fill="#1a1612"]{ fill:#f0e8e0; }
+body.light .timing{ background:#f5ece6; color:#b07a5c; border-color:#e0c8b8; }
+body.light .wo-add-btn{ border-color:#7a8e9e; color:#7a8e9e; }
+body.light .wo-add-btn:hover{ background:#7a8e9e; color:white; }
+body.light .note-label{ background:#e8f4fc; color:#4a8aaa; border-color:#b8d8ee; }
+body.light .yvideo{ background:#f5ece6; color:#b07a5c; border-color:#e0c8b8; }
+body.light .yvideo:hover{ background:#ede0d4; }
+body.light .tag-retinoid{ background:#f0e8ef; color:#8c7a9e; }
+body.light .tag-glycolic{ background:#e8f0ed; color:#5a8a7a; }
+body.light .tag-peptide{ background:#f0ebe8; color:#b07a5c; }
+body.light .tag-spf{ background:#fff3dc; color:#9a6e10; }
+body.light .tag-capelli{ background:#eae8f0; color:#6a5a8a; }
+body.light .tag-rose{ background:#fce8ee; color:#b05070; }
+body.light .gnotes-bd,
+body.light .tip-bd,
+body.light .yoga-bd,
+body.light .wo-bd{ background:white; }
+body.light .card-hd:hover{ background:#ddd4c8; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>La Mia <em>Routine</em></h1>
+  <div class="sub">Skincare · The Ordinary · Settimana tipo</div>
+</header>
+
+<div class="days" id="daySel"></div>
+<div id="content"></div>
+
+<div class="rules">
+  <div class="rt">Regole chiave</div>
+  <div class="rule">Glicolico mai con retinoide o peptidi</div>
+  <div class="rule">Peptidi solo al mattino, su pelle asciutta</div>
+  <div class="rule">Niacinamide ferma per ora</div>
+</div>
+<button class="reset" onclick="resetDay()">↺ Reset giornata</button>
+<button class="theme-toggle" onclick="toggleTheme()"><span class="toggle-icon">☀️</span> <span id="themeLabel">Passa al tema chiaro</span></button>
+
+<div class="card" id="card-gnote">
+  <div class="card-hd" onclick="toggleCard('gnote')">
+    <span class="icon">📝</span>
+    <span class="title">Note</span>
+    <span class="chevron">›</span>
+  </div>
+  <div class="card-body">
+    <div class="gnotes-bd">
+      <textarea class="gnotes-ta" id="gnoteArea" placeholder="Appunti, osservazioni, cose da ricordare…" oninput="onGlobalNoteInput()"></textarea>
+      <div class="gnotes-saved" id="gnoteSaved">✓ salvato</div>
+    </div>
+  </div>
+</div>
+
+<!-- SHEET -->
+<div class="ov" id="ov" onclick="maybeClose(event)">
+  <div class="sheet">
+    <div class="sh"></div>
+    <div id="shBody"></div>
+    <button class="shcl" onclick="closeSheet()">Chiudi</button>
+  </div>
+</div>
+
+<!-- VIDEO POPUP -->
+<div class="vov" id="vov" onclick="closeVideo(event)">
+  <div class="vpop">
+    <div class="vpop-hd">
+      <span id="vTitle" class="vpop-title"></span>
+      <button class="vpop-close" onclick="closeVideo()">✕</button>
+    </div>
+    <div class="vpop-thumb" id="vThumb"></div>
+    <div class="vpop-actions">
+      <a id="vLink" href="#" target="_blank" rel="noopener" class="vpop-btn" onclick="closeVideo()">▶ Apri su YouTube</a>
+    </div>
+  </div>
+</div>
+
+<!-- TIMER FLOTTANTE -->
+<button class="ftimer-btn" id="ftimerBtn" onclick="toggleFTimer()" title="Timer">⏱<span class="ftimer-badge" id="ftimerBadge"></span></button>
+<div class="ftimer-panel" id="ftimerPanel">
+  <div class="ftimer-title">Timer</div>
+  <div class="ftimer-display" id="ftimerDisplay">00:00</div>
+  <div class="ftimer-inputs">
+    <input class="ftimer-input" id="ftimerMin" type="number" min="0" max="99" value="0" placeholder="mm" oninput="ftimerReset()"/>
+    <span class="ftimer-sep">:</span>
+    <input class="ftimer-input" id="ftimerSec" type="number" min="0" max="59" value="30" placeholder="ss" oninput="ftimerReset()"/>
+  </div>
+  <div class="ftimer-btns">
+    <button class="ftimer-action ftimer-start" id="ftimerStartBtn" onclick="ftimerToggle()">▶ Avvia</button>
+    <button class="ftimer-action ftimer-reset" onclick="ftimerReset()">↺</button>
+  </div>
+  <div class="ftimer-label" id="ftimerLabel">imposta minuti e secondi</div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────────────────────────────────────
+const INFO = {
+  detergente:{n:'Detergente Yves Rocher Pure Algue',tags:[],qty:'Quantità da nocciola',come:'Emulsiona con acqua tiepida tra i palmi, applica con movimenti circolari per 30–60 s, risciacqua bene. Evita acqua troppo calda.',cons:'Detergente delicato a base di alghe. Dopo il risciacquo la pelle deve sentirsi pulita ma mai "tirata".'},
+  rose:{n:'Acqua di Rose',tags:[{k:'rose',l:'Toner'}],qty:'4–5 spruzzi (o dischetto imbevuto)',come:'Spruzza a 20–25 cm tenendo gli occhi chiusi, oppure tampona con un dischetto dall\'interno verso l\'esterno. Non sciacquare. Aspetta 20–30 s prima dell\'HA.',cons:'Scegli acqua di rose senza alcol e senza profumo. Conservala in frigo per un effetto lenitivo extra.'},
+  ha:{n:'Hyaluronic Acid 2% + B5',tags:[],qty:'3–4 gocce (pipetta)',come:'Applica su viso ancora umido, 20–30 s dopo l\'acqua di rose. Sigilla subito con la crema — senza crema sopra, l\'HA evapora.',cons:'Non aspettare che la pelle asciughi del tutto. In ambienti riscaldati o secchi applica la crema quasi subito.'},
+  peptidi:{n:'Multi-Peptide + Copper Peptides',tags:[{k:'peptide',l:'Peptidi'}],qty:'3–4 gocce (pipetta)',come:'Su pelle asciutta, dopo l\'assorbimento dell\'HA. Stendi su viso e collo con movimenti ascendenti. Aspetta 30 s, poi applica la crema.',cons:'Solo al mattino — il retinoide serale ne riduce l\'efficacia. Supportano il collagene e migliorano la texture nel tempo.'},
+  crema:{n:'Crema Idratante',tags:[],qty:'Quantità da noce di burro',come:'Ultimo step (prima dell\'SPF al mattino, sigillo serale). Scalda tra i polpastrelli, stendi con movimenti delicati verso l\'esterno su viso e collo.',cons:'Sigilla tutto quello che hai applicato prima. Formula senza profumo se la pelle è sensibile.'},
+  spf:{n:'SPF — Protezione Solare',tags:[{k:'spf',l:'SPF'}],qty:'¼ cucchiaino (regola 2 mg/cm²)',come:'Ultimo step mattutino. Distribuisci uniformemente su viso, collo e orecchie. Riapplica ogni 2 ore in esposizione prolungata.',cons:'Il prodotto anti-aging più efficace in assoluto. Essenziale con glicolico e retinoide. Anche in inverno e in città.'},
+  retinoid:{n:'Granactive Retinoid 2% Emulsion',tags:[{k:'retinoid',l:'Retinoid'}],qty:'2–3 gocce (pipetta)',come:'Su pelle asciutta dopo l\'HA. Stendi su guance, fronte e mento evitando il contorno occhi e le narici.',cons:'Retinoide di nuova generazione, meno irritante del retinolo classico. Leggero pizzicore nelle prime settimane è normale.'},
+  glycolic:{n:'Glycolic Acid 7% Toning Solution',tags:[{k:'glycolic',l:'Glicolico'}],qty:'1 dischetto di cotone ben imbevuto',come:'Subito dopo il detergente, su pelle asciutta. Tampona con movimenti circolari evitando il contorno occhi. Non sciacquare. Aspetta 5–10 min prima del passo successivo.',cons:'Solo la sera, mai lo stesso giorno del retinoide. Il giorno dopo usa sempre SPF.'},
+  siero:{n:'Siero Cute',tags:[{k:'capelli',l:'Capelli'}],qty:'6–8 gocce (o dose indicata)',come:'Sullo scalpo asciutto. Massaggia con i polpastrelli con movimenti circolari per 30–60 s. Non sciacquare.',cons:'Risultati dopo 8–12 settimane. Il massaggio è fondamentale quanto il prodotto stesso.'}
+};
+
+const M = [ // MORNING
+  {n:'Detergente Yves Rocher Pure Algue',k:'detergente',tags:[],t:null},
+  {n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},
+  {n:'Hyaluronic Acid',k:'ha',tags:[],t:null},
+  {n:'Multi-Peptide + Copper Peptides',k:'peptidi',tags:['peptide'],t:'pelle asciutta · aspetta 30 s'},
+  {n:'Crema idratante',k:'crema',tags:[],t:null},
+  {n:'SPF (se esci)',k:'spf',tags:['spf'],t:null},
+];
+
+const E = [ // EVENING by day 0=Mon
+  [{n:'Detergente',k:'detergente',tags:[],t:null},{n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},{n:'Hyaluronic Acid',k:'ha',tags:[],t:null},{n:'Granactive Retinoid 2%',k:'retinoid',tags:['retinoid'],t:null},{n:'Crema',k:'crema',tags:[],t:null}],
+  [{n:'Detergente',k:'detergente',tags:[],t:null},{n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},{n:'Hyaluronic Acid',k:'ha',tags:[],t:null},{n:'Crema',k:'crema',tags:[],t:null}],
+  [{n:'Detergente',k:'detergente',tags:[],t:null},{n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},{n:'Hyaluronic Acid',k:'ha',tags:[],t:null},{n:'Granactive Retinoid 2%',k:'retinoid',tags:['retinoid'],t:null},{n:'Crema',k:'crema',tags:[],t:null}],
+  [{n:'Detergente',k:'detergente',tags:[],t:null},{n:'Glycolic Acid 7%',k:'glycolic',tags:['glycolic'],t:'aspetta 5–10 min'},{n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},{n:'Hyaluronic Acid',k:'ha',tags:[],t:null},{n:'Crema',k:'crema',tags:[],t:null}],
+  [{n:'Detergente',k:'detergente',tags:[],t:null},{n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},{n:'Hyaluronic Acid',k:'ha',tags:[],t:null},{n:'Granactive Retinoid 2%',k:'retinoid',tags:['retinoid'],t:null},{n:'Crema',k:'crema',tags:[],t:null}],
+  [{n:'Detergente',k:'detergente',tags:[],t:null},{n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},{n:'Hyaluronic Acid',k:'ha',tags:[],t:null},{n:'Crema',k:'crema',tags:[],t:null}],
+  [{n:'Detergente',k:'detergente',tags:[],t:null},{n:'Glycolic Acid 7%',k:'glycolic',tags:['glycolic'],t:'aspetta 5–10 min'},{n:'Acqua di Rose',k:'rose',tags:['rose'],t:'→ aspetta 20–30 s'},{n:'Hyaluronic Acid',k:'ha',tags:[],t:null},{n:'Crema',k:'crema',tags:[],t:null}],
+];
+
+const HAIR = {n:'Siero cute + massaggio 30–60 s',k:'siero',tags:['capelli'],t:null};
+
+const TIPS = [
+  { // Lunedì — Respirazione 4-7-8
+    type:'esercizio', icon:'🌬', titolo:'Respirazione 4-7-8',
+    testo:'Attiva il sistema nervoso parasimpatico e riduce l\'ansia in meno di due minuti.',
+    consiglio:'Quando inspiri attivi il sistema simpatico (allerta), quando espiri attivi quello parasimpatico (calma). Tenere l\'espirazione più lunga dell\'inspirazione — come in questo esercizio — sposta deliberatamente il corpo verso uno stato di rilassamento. È una delle tecniche più validate dalla ricerca per la regolazione emotiva immediata.',
+    esercizio:{
+      tipo:'timer',
+      intro:'Siediti comodo/a, schiena dritto/a. Premi avvia quando sei pronto/a.',
+      ripetizioni:4,
+      fasi:[
+        {label:'Inspira dal naso', durata:4, colore:'#5a8a7a'},
+        {label:'Trattieni il respiro', durata:7, colore:'#7a5a80'},
+        {label:'Espira lentamente dalla bocca', durata:8, colore:'#c8a84a'},
+      ]
+    }
+  },
+  { // Martedì — Box breathing
+    type:'esercizio', icon:'⬛', titolo:'Box Breathing',
+    testo:'Quattro lati uguali come un quadrato — ritma il sistema nervoso e porta calma immediata.',
+    consiglio:'Il box breathing agisce sul nervo vago, il principale regolatore del sistema nervoso autonomo. Usato dai Navy SEAL in situazioni di stress estremo, funziona perché impone una struttura ritmica al respiro che interrompe il ciclo di iperattivazione. Anche una sola serie riduce la frequenza cardiaca in modo misurabile.',
+    esercizio:{
+      tipo:'timer',
+      intro:'Respira lentamente. Ogni lato dura 4 secondi. Ripeti 4 volte.',
+      ripetizioni:4,
+      fasi:[
+        {label:'Inspira', durata:4, colore:'#5a8a7a'},
+        {label:'Trattieni', durata:4, colore:'#7a5a80'},
+        {label:'Espira', durata:4, colore:'#c8a84a'},
+        {label:'Trattieni', durata:4, colore:'#4a6a8a'},
+      ]
+    }
+  },
+  { // Mercoledì — Body scan
+    type:'esercizio', icon:'🧘', titolo:'Body Scan',
+    testo:'Porta l\'attenzione nel corpo zona per zona, spezzando il ciclo di ruminazione mentale.',
+    consiglio:'La ruminazione mentale — il pensiero che gira in circolo — vive nella testa. Il body scan la interrompe spostando l\'attenzione sul corpo, che esiste solo nel presente. È una tecnica derivata dall\'MBSR (Mindfulness-Based Stress Reduction) di Jon Kabat-Zinn, una delle pratiche più studiate in psicologia clinica per ridurre ansia e stress cronico.',
+    esercizio:{
+      tipo:'timer',
+      intro:'Chiudi gli occhi. Sdraiato/a o seduto/a. Nessuna fretta.',
+      ripetizioni:1,
+      fasi:[
+        {label:'Gambe e piedi — nota le sensazioni', durata:20, colore:'#5a7a6a'},
+        {label:'Addome e petto — respira', durata:20, colore:'#6a5a8e'},
+        {label:'Spalle e collo — rilascia la tensione', durata:20, colore:'#7a5a80'},
+        {label:'Viso e testa — lascia andare tutto', durata:20, colore:'#c8a84a'},
+        {label:'Tutto il corpo — presente qui', durata:20, colore:'#5a8a7a'},
+      ]
+    }
+  },
+  { // Giovedì — Coerenza cardiaca
+    type:'esercizio', icon:'💚', titolo:'Coerenza Cardiaca',
+    testo:'Respirare a 5 secondi per fase sincronizza il cuore con il cervello, riducendo il cortisolo.',
+    consiglio:'La coerenza cardiaca agisce sull\'Heart Rate Variability (HRV), un indicatore della flessibilità del sistema nervoso autonomo. Un HRV alto è associato a maggiore resilienza emotiva, migliore concentrazione e sistema immunitario più forte. Praticata 3 volte al giorno per 5 minuti, produce effetti cumulativi sul benessere psicofisiologico documentati da anni di ricerca.',
+    esercizio:{
+      tipo:'timer',
+      intro:'Respira regolarmente. Stesso ritmo per tutte le ripetizioni.',
+      ripetizioni:10,
+      fasi:[
+        {label:'Inspira', durata:5, colore:'#5a8a7a'},
+        {label:'Espira', durata:5, colore:'#c8a84a'},
+      ]
+    }
+  },
+  { // Venerdì — Grounding 5-4-3-2-1
+    type:'esercizio', icon:'🌿', titolo:'Grounding 5-4-3-2-1',
+    testo:'Tecnica di radicamento per uscire dall\'ansia e tornare al presente attraverso i 5 sensi.',
+    consiglio:'L\'ansia vive nel futuro, i ricordi dolorosi nel passato — il presente sensoriale è l\'unico posto dove nessuno dei due può esistere pienamente. Questa tecnica, usata in terapia cognitivo-comportamentale e EMDR, interrompe lo stato dissociativo attivando la corteccia prefrontale attraverso l\'elaborazione sensoriale concreta. È particolarmente efficace negli attacchi di panico.',
+    esercizio:{
+      tipo:'timer',
+      intro:'Guarda intorno. Per ogni fase osserva lentamente quello che ti chiede.',
+      ripetizioni:1,
+      fasi:[
+        {label:'5 cose che vedi intorno a te', durata:25, colore:'#5a8a7a'},
+        {label:'4 cose che puoi toccare', durata:20, colore:'#7a5a80'},
+        {label:'3 suoni che senti', durata:15, colore:'#4a6a8a'},
+        {label:'2 odori che percepisci', durata:12, colore:'#c8a84a'},
+        {label:'1 cosa che puoi assaporare', durata:8, colore:'#5a7a6a'},
+      ]
+    }
+  },
+  { // Sabato — Gratitudine sensoriale
+    type:'esercizio', icon:'🙏', titolo:'Gratitudine Profonda',
+    testo:'Non una lista, ma un\'esperienza. Fermarsi davvero su ogni cosa e sentirla nel corpo.',
+    consiglio:'La ricerca in psicologia positiva (Emmons & McCullough) mostra che praticare gratitudine riduce i sintomi depressivi e aumenta il benessere soggettivo — ma solo quando è sentita, non solo elencata. Quando senti gratitudine nel corpo si attiva l\'insula e la corteccia cingolata anteriore, le stesse aree coinvolte nella connessione sociale e nell\'empatia. Non è sentimentalismo: è neuroscienze.',
+    esercizio:{
+      tipo:'timer',
+      intro:'Niente lista. Solo presenza. Premi avvia.',
+      ripetizioni:1,
+      fasi:[
+        {label:'Pensa a qualcosa per cui sei grato/a', durata:30, colore:'#c8a84a'},
+        {label:'Sentila nel corpo — dove la senti?', durata:30, colore:'#7a5a80'},
+        {label:'Pensa a una persona che ti ha supportata', durata:30, colore:'#5a8a7a'},
+        {label:'Lascia che quella gratitudine si espanda', durata:30, colore:'#c8a84a'},
+      ]
+    }
+  },
+  { // Domenica — Rilascio muscolare progressivo
+    type:'esercizio', icon:'✨', titolo:'Rilascio Muscolare Progressivo',
+    testo:'Contrai e rilascia ogni gruppo muscolare in sequenza per sciogliere la tensione accumulata.',
+    consiglio:'Sviluppato da Edmund Jacobson negli anni \'20, il rilascio muscolare progressivo si basa su un principio semplice: è impossibile essere fisicamente tesi e mentalmente rilassati allo stesso tempo. Contraendo deliberatamente i muscoli e poi rilasciandoli, si impara a riconoscere e controllare la tensione muscolare — spesso automatica e inconsapevole — associata all\'ansia cronica.',
+    esercizio:{
+      tipo:'timer',
+      intro:'Sdraiato/a o seduto/a comodo/a. Contrai forte ogni zona, poi rilascia completamente.',
+      ripetizioni:1,
+      fasi:[
+        {label:'Piedi — contrai 5 s, poi rilascia', durata:12, colore:'#5a7a6a'},
+        {label:'Gambe — contrai, poi rilascia', durata:12, colore:'#6a5a8e'},
+        {label:'Addome — contrai, poi rilascia', durata:12, colore:'#4a6a8a'},
+        {label:'Braccia e mani — contrai, poi rilascia', durata:12, colore:'#7a5a80'},
+        {label:'Spalle — alzale verso le orecchie, rilascia', durata:12, colore:'#c8a84a'},
+        {label:'Viso — arriccia tutto, poi rilascia', durata:12, colore:'#5a8a7a'},
+        {label:'Tutto il corpo — respira e lascia andare', durata:15, colore:'#c8a84a'},
+      ]
+    }
+  },
+];
+
+// ─ YOGA SVGs ─────────────────────────────────────────────────────────────────
+const Y_SVG = [
+
+// 0 Lun — Fronte
+`<svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="mh" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#c8a84a"/></marker>
+    <marker id="mb" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#e8b84a"/></marker>
+  </defs>
+  <!-- sfondo zona target -->
+  <rect x="0" y="0" width="300" height="220" fill="#1a1612" rx="6"/>
+  <!-- badge zona -->
+  <rect x="96" y="10" width="108" height="18" rx="9" fill="#c8a84a"/>
+  <text x="150" y="22.5" text-anchor="middle" font-size="9" font-family="sans-serif" fill="white" font-weight="600" letter-spacing="1">FRONTE</text>
+  <!-- silhouette testa — figura stilizzata pittogramma -->
+  <!-- testa ovale -->
+  <ellipse cx="150" cy="105" rx="52" ry="60" fill="#3a2e28"/>
+  <!-- capelli — forma semplice -->
+  <path d="M100 88 Q98 52 150 44 Q202 52 200 88" fill="#6a5040"/>
+  <!-- collo -->
+  <rect x="135" y="160" width="30" height="22" rx="5" fill="#4a3a30"/>
+  <!-- orecchie -->
+  <ellipse cx="98" cy="110" rx="8" ry="11" fill="#4a3a30"/>
+  <ellipse cx="202" cy="110" rx="8" ry="11" fill="#4a3a30"/>
+  <!-- zona fronte evidenziata -->
+  <path d="M104 86 Q150 68 196 86 L196 104 Q150 86 104 104 Z" fill="#c8a84a" opacity=".22"/>
+  <!-- sopracciglia alzate -->
+  <path d="M114 88 Q132 79 148 85" fill="none" stroke="#7a5c40" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M152 85 Q168 79 186 88" fill="none" stroke="#7a5c40" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- occhi -->
+  <ellipse cx="130" cy="108" rx="13" ry="9" fill="white" stroke="#d4b8a0" stroke-width="1"/>
+  <ellipse cx="170" cy="108" rx="13" ry="9" fill="white" stroke="#d4b8a0" stroke-width="1"/>
+  <circle cx="131" cy="108" r="5" fill="#5a3a28"/>
+  <circle cx="171" cy="108" r="5" fill="#5a3a28"/>
+  <circle cx="133" cy="106" r="1.8" fill="white"/>
+  <circle cx="173" cy="106" r="1.8" fill="white"/>
+  <!-- naso bocca semplici -->
+  <path d="M146 118 Q142 126 138 130 Q150 134 162 130 Q158 126 154 118" fill="none" stroke="#c4a080" stroke-width="1.2"/>
+  <path d="M136 152 Q150 159 164 152" fill="none" stroke="#c4a080" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- frecce sopracciglia SU -->
+  <line x1="130" y1="91" x2="130" y2="78" stroke="#b07a5c" stroke-width="2" marker-end="url(#mb)"/>
+  <line x1="170" y1="91" x2="170" y2="78" stroke="#b07a5c" stroke-width="2" marker-end="url(#mb)"/>
+  <!-- mani stilizzate — rettangoli arrotondati -->
+  <rect x="16" y="102" width="52" height="16" rx="8" fill="#4a3a30" stroke="#c4a888" stroke-width="1"/>
+  <rect x="232" y="102" width="52" height="16" rx="8" fill="#4a3a30" stroke="#c4a888" stroke-width="1"/>
+  <!-- dita accennate -->
+  <line x1="30" y1="102" x2="30" y2="94" stroke="#d4b898" stroke-width="3" stroke-linecap="round"/>
+  <line x1="40" y1="102" x2="40" y2="93" stroke="#d4b898" stroke-width="3" stroke-linecap="round"/>
+  <line x1="50" y1="102" x2="50" y2="93" stroke="#d4b898" stroke-width="3" stroke-linecap="round"/>
+  <line x1="60" y1="102" x2="60" y2="94" stroke="#d4b898" stroke-width="3" stroke-linecap="round"/>
+  <line x1="240" y1="102" x2="240" y2="94" stroke="#d4b898" stroke-width="3" stroke-linecap="round"/>
+  <line x1="250" y1="102" x2="250" y2="93" stroke="#d4b898" stroke-width="3" stroke-linecap="round"/>
+  <line x1="260" y1="102" x2="260" y2="93" stroke="#d4b898" stroke-width="3" stroke-linecap="round"/>
+  <line x1="270" y1="102" x2="270" y2="94" stroke="#d4b898" stroke-width="3" stroke-linecap="round"/>
+  <!-- frecce mani verso tempie -->
+  <line x1="70" y1="110" x2="86" y2="110" stroke="#9e7a8c" stroke-width="2.2" marker-end="url(#mh)"/>
+  <line x1="230" y1="110" x2="214" y2="110" stroke="#9e7a8c" stroke-width="2.2" marker-end="url(#mh)"/>
+  <!-- caption -->
+  <text x="150" y="212" text-anchor="middle" font-size="9.5" fill="#c8a84a" font-family="Georgia,serif" font-style="italic">mani verso le tempie · sopracciglia su</text>
+</svg>`,
+
+// 1 Mar — Guance
+`<svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="mh" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#c8a84a"/></marker></defs>
+  <rect x="0" y="0" width="300" height="220" fill="#1a1612" rx="6"/>
+  <rect x="91" y="10" width="118" height="18" rx="9" fill="#c8a84a"/>
+  <text x="150" y="22.5" text-anchor="middle" font-size="9" font-family="sans-serif" fill="white" font-weight="600" letter-spacing="1">GUANCE</text>
+  <ellipse cx="150" cy="105" rx="52" ry="60" fill="#3a2e28"/>
+  <path d="M100 88 Q98 52 150 44 Q202 52 200 88" fill="#6a5040"/>
+  <rect x="135" y="160" width="30" height="22" rx="5" fill="#4a3a30"/>
+  <ellipse cx="98" cy="110" rx="8" ry="11" fill="#4a3a30"/>
+  <ellipse cx="202" cy="110" rx="8" ry="11" fill="#4a3a30"/>
+  <!-- guance evidenziate -->
+  <ellipse cx="112" cy="128" rx="22" ry="16" fill="#c8a84a" opacity=".2"/>
+  <ellipse cx="188" cy="128" rx="22" ry="16" fill="#c8a84a" opacity=".2"/>
+  <!-- occhi a mezzaluna (sorriso) -->
+  <path d="M118 102 Q130 92 142 102" fill="none" stroke="#7a5c40" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M158 102 Q170 92 182 102" fill="none" stroke="#7a5c40" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- sopracciglia -->
+  <path d="M116 90 Q132 83 146 88" fill="none" stroke="#7a5c40" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M154 88 Q168 83 184 90" fill="none" stroke="#7a5c40" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- sorriso -->
+  <path d="M110 148 Q150 175 190 148" fill="#f8e0d8" stroke="#c4908a" stroke-width="2" stroke-linecap="round"/>
+  <path d="M118 152 Q150 166 182 152" fill="white" stroke="#e0c0b8" stroke-width=".8"/>
+  <!-- naso -->
+  <path d="M146 118 Q142 126 138 130 Q150 134 162 130 Q158 126 154 118" fill="none" stroke="#c4a080" stroke-width="1.2"/>
+  <!-- dita sugli zigomi — cerchi stilizzati -->
+  <circle cx="112" cy="122" r="9" fill="#4a3a30" stroke="#c4a888" stroke-width="1.2"/>
+  <circle cx="188" cy="122" r="9" fill="#4a3a30" stroke="#c4a888" stroke-width="1.2"/>
+  <!-- frecce su -->
+  <line x1="112" y1="111" x2="112" y2="96" stroke="#9e7a8c" stroke-width="2.2" marker-end="url(#mh)"/>
+  <line x1="188" y1="111" x2="188" y2="96" stroke="#9e7a8c" stroke-width="2.2" marker-end="url(#mh)"/>
+  <text x="150" y="212" text-anchor="middle" font-size="9.5" fill="#c8a84a" font-family="Georgia,serif" font-style="italic">sorriso ampio · spingi gli zigomi in su</text>
+</svg>`,
+
+// 2 Mer — Occhi
+`<svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="mb" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#e8b84a"/></marker></defs>
+  <rect x="0" y="0" width="300" height="220" fill="#1a1612" rx="6"/>
+  <rect x="67" y="10" width="166" height="18" rx="9" fill="#c8a84a"/>
+  <text x="150" y="22.5" text-anchor="middle" font-size="9" font-family="sans-serif" fill="white" font-weight="600" letter-spacing="1">CONTORNO OCCHI</text>
+  <ellipse cx="150" cy="105" rx="52" ry="60" fill="#3a2e28"/>
+  <path d="M100 88 Q98 52 150 44 Q202 52 200 88" fill="#6a5040"/>
+  <rect x="135" y="160" width="30" height="22" rx="5" fill="#4a3a30"/>
+  <ellipse cx="98" cy="110" rx="8" ry="11" fill="#4a3a30"/>
+  <ellipse cx="202" cy="110" rx="8" ry="11" fill="#4a3a30"/>
+  <!-- sopracciglia -->
+  <path d="M114 88 Q130 81 144 87" fill="none" stroke="#7a5c40" stroke-width="2" stroke-linecap="round"/>
+  <path d="M156 87 Q170 81 186 88" fill="none" stroke="#7a5c40" stroke-width="2" stroke-linecap="round"/>
+  <!-- occhi più grandi -->
+  <ellipse cx="130" cy="108" rx="17" ry="12" fill="white" stroke="#d4b8a0" stroke-width="1.2"/>
+  <ellipse cx="170" cy="108" rx="17" ry="12" fill="white" stroke="#d4b8a0" stroke-width="1.2"/>
+  <circle cx="130" cy="108" r="6.5" fill="#5a3a28"/>
+  <circle cx="170" cy="108" r="6.5" fill="#5a3a28"/>
+  <circle cx="132" cy="106" r="2.2" fill="white"/>
+  <circle cx="172" cy="106" r="2.2" fill="white"/>
+  <!-- orbite trattegiate evidenziate -->
+  <ellipse cx="130" cy="108" rx="24" ry="18" fill="none" stroke="#9e7a8c" stroke-width="1.6" stroke-dasharray="4,3" opacity=".8"/>
+  <ellipse cx="170" cy="108" rx="24" ry="18" fill="none" stroke="#9e7a8c" stroke-width="1.6" stroke-dasharray="4,3" opacity=".8"/>
+  <!-- frecce direzionali cerchio sx -->
+  <path d="M130 90 Q108 90 107 108" fill="none" stroke="#b07a5c" stroke-width="2.2" stroke-linecap="round" marker-end="url(#mb)"/>
+  <!-- frecce direzionali cerchio dx -->
+  <path d="M170 90 Q192 90 193 108" fill="none" stroke="#b07a5c" stroke-width="2.2" stroke-linecap="round" marker-end="url(#mb)"/>
+  <!-- naso bocca -->
+  <path d="M146 120 Q142 128 138 132 Q150 136 162 132 Q158 128 154 120" fill="none" stroke="#c4a080" stroke-width="1.2"/>
+  <path d="M136 154 Q150 161 164 154" fill="none" stroke="#c4a080" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- dita agli angoli occhi -->
+  <ellipse cx="106" cy="108" rx="7" ry="5" fill="#4a3a30" stroke="#c4a888" stroke-width="1"/>
+  <ellipse cx="194" cy="108" rx="7" ry="5" fill="#4a3a30" stroke="#c4a888" stroke-width="1"/>
+  <text x="150" y="212" text-anchor="middle" font-size="9.5" fill="#c8a84a" font-family="Georgia,serif" font-style="italic">cerchi leggeri lungo l'orbita ossea</text>
+</svg>`,
+
+// 3 Gio — Mascella / Collo
+`<svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="mh" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#c8a84a"/></marker>
+    <marker id="ml" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8,0 0,3 8,6" fill="#e8b84a"/></marker>
+    <marker id="mr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#e8b84a"/></marker>
+  </defs>
+  <rect x="0" y="0" width="300" height="220" fill="#1a1612" rx="6"/>
+  <rect x="62" y="10" width="176" height="18" rx="9" fill="#c8a84a"/>
+  <text x="150" y="22.5" text-anchor="middle" font-size="9" font-family="sans-serif" fill="white" font-weight="600" letter-spacing="1">MASCELLA · COLLO</text>
+  <!-- testa ruotata indietro ~15° -->
+  <g transform="rotate(-14,150,108)">
+    <ellipse cx="150" cy="102" rx="52" ry="60" fill="#3a2e28"/>
+    <path d="M100 86 Q98 50 150 42 Q202 50 200 86" fill="#6a5040"/>
+    <ellipse cx="98" cy="106" rx="8" ry="11" fill="#4a3a30"/>
+    <ellipse cx="202" cy="106" rx="8" ry="11" fill="#4a3a30"/>
+    <!-- zona mascella/collo evidenziata -->
+    <path d="M106 148 Q150 168 194 148 L196 162 Q150 184 104 162 Z" fill="#c8a84a" opacity=".2"/>
+    <!-- sopracciglia -->
+    <path d="M114 85 Q130 78 144 84" fill="none" stroke="#7a5c40" stroke-width="2" stroke-linecap="round"/>
+    <path d="M156 84 Q170 78 186 85" fill="none" stroke="#7a5c40" stroke-width="2" stroke-linecap="round"/>
+    <!-- occhi -->
+    <ellipse cx="130" cy="100" rx="13" ry="9" fill="white" stroke="#d4b8a0" stroke-width="1"/>
+    <ellipse cx="170" cy="100" rx="13" ry="9" fill="white" stroke="#d4b8a0" stroke-width="1"/>
+    <circle cx="130" cy="100" r="5" fill="#5a3a28"/>
+    <circle cx="170" cy="100" r="5" fill="#5a3a28"/>
+    <!-- naso -->
+    <path d="M146 112 Q142 120 138 124 Q150 128 162 124 Q158 120 154 112" fill="none" stroke="#c4a080" stroke-width="1.2"/>
+    <!-- bocca socchiusa -->
+    <path d="M132 146 Q150 154 168 146" fill="none" stroke="#c4a080" stroke-width="1.8" stroke-linecap="round"/>
+    <!-- collo -->
+    <rect x="132" y="158" width="36" height="24" rx="6" fill="#4a3a30"/>
+  </g>
+  <!-- freccia testa indietro -->
+  <path d="M208 56 Q232 44 234 72" fill="none" stroke="#9e7a8c" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#mh)"/>
+  <text x="232" y="41" font-size="8.5" fill="#c8a84a" font-family="sans-serif" text-anchor="middle" font-style="italic">indietro</text>
+  <!-- frecce mascella sx-dx -->
+  <line x1="72" y1="178" x2="54" y2="178" stroke="#b07a5c" stroke-width="2.2" marker-end="url(#ml)"/>
+  <line x1="72" y1="178" x2="90" y2="178" stroke="#b07a5c" stroke-width="2.2" marker-end="url(#mr)"/>
+  <text x="72" y="193" text-anchor="middle" font-size="8" fill="#e8b84a" font-family="sans-serif">← →</text>
+  <text x="150" y="212" text-anchor="middle" font-size="9.5" fill="#c8a84a" font-family="Georgia,serif" font-style="italic">testa indietro · mascella lenta ← →</text>
+</svg>`,
+
+// 4 Ven — Labbra
+`<svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="ml" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8,0 0,3 8,6" fill="#c8a84a"/></marker>
+    <marker id="mr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#c8a84a"/></marker>
+  </defs>
+  <rect x="0" y="0" width="300" height="220" fill="#1a1612" rx="6"/>
+  <rect x="96" y="10" width="108" height="18" rx="9" fill="#c8a84a"/>
+  <text x="150" y="22.5" text-anchor="middle" font-size="9" font-family="sans-serif" fill="white" font-weight="600" letter-spacing="1">LABBRA</text>
+  <ellipse cx="150" cy="105" rx="52" ry="60" fill="#3a2e28"/>
+  <path d="M100 88 Q98 52 150 44 Q202 52 200 88" fill="#6a5040"/>
+  <rect x="135" y="160" width="30" height="22" rx="5" fill="#4a3a30"/>
+  <ellipse cx="98" cy="110" rx="8" ry="11" fill="#4a3a30"/>
+  <ellipse cx="202" cy="110" rx="8" ry="11" fill="#4a3a30"/>
+  <!-- sopracciglia -->
+  <path d="M114 88 Q130 81 144 87" fill="none" stroke="#7a5c40" stroke-width="2" stroke-linecap="round"/>
+  <path d="M156 87 Q170 81 186 88" fill="none" stroke="#7a5c40" stroke-width="2" stroke-linecap="round"/>
+  <!-- occhi neutrali -->
+  <ellipse cx="130" cy="108" rx="13" ry="9" fill="white" stroke="#d4b8a0" stroke-width="1"/>
+  <ellipse cx="170" cy="108" rx="13" ry="9" fill="white" stroke="#d4b8a0" stroke-width="1"/>
+  <circle cx="130" cy="108" r="5" fill="#5a3a28"/>
+  <circle cx="170" cy="108" r="5" fill="#5a3a28"/>
+  <circle cx="132" cy="106" r="1.8" fill="white"/>
+  <circle cx="172" cy="106" r="1.8" fill="white"/>
+  <!-- naso -->
+  <path d="M146 118 Q142 126 138 130 Q150 134 162 130 Q158 126 154 118" fill="none" stroke="#c4a080" stroke-width="1.2"/>
+  <!-- zona labbra evidenziata -->
+  <ellipse cx="150" cy="150" rx="26" ry="18" fill="#c8a84a" opacity=".15"/>
+  <!-- labbra arricciate -->
+  <ellipse cx="150" cy="150" rx="18" ry="14" fill="#f0c8c0" stroke="#c4908a" stroke-width="2"/>
+  <path d="M132 150 Q150 142 168 150" fill="#d4a09a" opacity=".45"/>
+  <!-- cerchio tensione tratteggiato -->
+  <ellipse cx="150" cy="150" rx="26" ry="20" fill="none" stroke="#9e7a8c" stroke-width="1.4" stroke-dasharray="4,3"/>
+  <!-- frecce compressione -->
+  <line x1="122" y1="150" x2="106" y2="150" stroke="#9e7a8c" stroke-width="2.2" marker-end="url(#ml)"/>
+  <line x1="178" y1="150" x2="194" y2="150" stroke="#9e7a8c" stroke-width="2.2" marker-end="url(#mr)"/>
+  <text x="150" y="212" text-anchor="middle" font-size="9.5" fill="#c8a84a" font-family="Georgia,serif" font-style="italic">arriccia le labbra · tieni 5 s · rilascia</text>
+</svg>`,
+
+// 5 Sab — Collo allungamento
+`<svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="mh" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#c8a84a"/></marker></defs>
+  <rect x="0" y="0" width="300" height="220" fill="#1a1612" rx="6"/>
+  <rect x="62" y="10" width="176" height="18" rx="9" fill="#c8a84a"/>
+  <text x="150" y="22.5" text-anchor="middle" font-size="9" font-family="sans-serif" fill="white" font-weight="600" letter-spacing="1">COLLO · PLATISMA</text>
+  <!-- testa inclinata lateralmente ~20° -->
+  <g transform="rotate(20,150,104)">
+    <ellipse cx="150" cy="100" rx="50" ry="58" fill="#3a2e28"/>
+    <path d="M102 84 Q100 50 150 42 Q200 50 198 84" fill="#6a5040"/>
+    <ellipse cx="100" cy="104" rx="8" ry="11" fill="#4a3a30"/>
+    <ellipse cx="200" cy="104" rx="8" ry="11" fill="#4a3a30"/>
+    <!-- zona collo sx evidenziata -->
+    <path d="M102 132 Q112 170 136 183 L140 183 Q116 170 108 132 Z" fill="#c8a84a" opacity=".28"/>
+    <!-- sopracciglia -->
+    <path d="M114 84 Q130 77 144 83" fill="none" stroke="#7a5c40" stroke-width="2" stroke-linecap="round"/>
+    <path d="M156 83 Q170 77 186 84" fill="none" stroke="#7a5c40" stroke-width="2" stroke-linecap="round"/>
+    <!-- occhi -->
+    <ellipse cx="130" cy="98" rx="12" ry="8" fill="white" stroke="#d4b8a0" stroke-width="1"/>
+    <ellipse cx="170" cy="98" rx="12" ry="8" fill="white" stroke="#d4b8a0" stroke-width="1"/>
+    <circle cx="130" cy="98" r="4.5" fill="#5a3a28"/>
+    <circle cx="170" cy="98" r="4.5" fill="#5a3a28"/>
+    <!-- naso -->
+    <path d="M146 110 Q142 118 138 122 Q150 126 162 122 Q158 118 154 110" fill="none" stroke="#c4a080" stroke-width="1.2"/>
+    <path d="M134 146 Q150 153 166 146" fill="none" stroke="#c4a080" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- collo -->
+    <rect x="132" y="156" width="36" height="24" rx="6" fill="#4a3a30"/>
+    <!-- spalle -->
+    <path d="M82 184 Q116 176 132 180" fill="none" stroke="#c4a888" stroke-width="2"/>
+    <path d="M218 184 Q184 176 168 180" fill="none" stroke="#c4a888" stroke-width="2"/>
+  </g>
+  <!-- freccia allungamento lato sinistro -->
+  <path d="M46 94 Q26 130 38 166" fill="none" stroke="#9e7a8c" stroke-width="2.2" stroke-dasharray="5,3" marker-end="url(#mh)"/>
+  <text x="30" y="88" font-size="8.5" fill="#c8a84a" font-family="sans-serif" text-anchor="middle" font-style="italic">allungamento</text>
+  <text x="150" y="212" text-anchor="middle" font-size="9.5" fill="#c8a84a" font-family="Georgia,serif" font-style="italic">inclina verso la spalla · 20 s per lato</text>
+</svg>`,
+
+// 6 Dom — Lion's breath
+`<svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="mh" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#c8a84a"/></marker></defs>
+  <rect x="0" y="0" width="300" height="220" fill="#1a1612" rx="6"/>
+  <rect x="63" y="10" width="174" height="18" rx="9" fill="#c8a84a"/>
+  <text x="150" y="22.5" text-anchor="middle" font-size="9" font-family="sans-serif" fill="white" font-weight="600" letter-spacing="1">VISO COMPLETO</text>
+  <ellipse cx="150" cy="104" rx="52" ry="60" fill="#3a2e28"/>
+  <path d="M100 87 Q98 51 150 43 Q202 51 200 87" fill="#6a5040"/>
+  <rect x="135" y="158" width="30" height="22" rx="5" fill="#4a3a30"/>
+  <ellipse cx="98" cy="108" rx="8" ry="11" fill="#4a3a30"/>
+  <ellipse cx="202" cy="108" rx="8" ry="11" fill="#4a3a30"/>
+  <!-- zona viso intera evidenziata -->
+  <ellipse cx="150" cy="104" rx="46" ry="55" fill="#c8a84a" opacity=".08"/>
+  <!-- sopracciglia tese verso il basso (espressione intensa) -->
+  <path d="M114 86 Q130 80 144 87" fill="none" stroke="#7a5c40" stroke-width="2.8" stroke-linecap="round"/>
+  <path d="M156 87 Q170 80 186 86" fill="none" stroke="#7a5c40" stroke-width="2.8" stroke-linecap="round"/>
+  <!-- occhi SPALANCATI -->
+  <ellipse cx="130" cy="102" rx="16" ry="13" fill="white" stroke="#d4b8a0" stroke-width="1.2"/>
+  <ellipse cx="170" cy="102" rx="16" ry="13" fill="white" stroke="#d4b8a0" stroke-width="1.2"/>
+  <circle cx="130" cy="102" r="7.5" fill="#5a3a28"/>
+  <circle cx="170" cy="102" r="7.5" fill="#5a3a28"/>
+  <circle cx="132" cy="99" r="2.8" fill="white"/>
+  <circle cx="172" cy="99" r="2.8" fill="white"/>
+  <!-- naso -->
+  <path d="M146 116 Q142 124 138 128 Q150 132 162 128 Q158 124 154 116" fill="none" stroke="#c4a080" stroke-width="1.2"/>
+  <!-- bocca SPALANCATA -->
+  <ellipse cx="150" cy="150" rx="26" ry="21" fill="white" stroke="#c4908a" stroke-width="2"/>
+  <ellipse cx="150" cy="141" rx="26" ry="12" fill="#f0c0b0" opacity=".5"/>
+  <!-- lingua prominente -->
+  <path d="M135 158 Q150 180 165 158" fill="#d08880" stroke="#b07060" stroke-width="1.5"/>
+  <!-- linea separazione labbra -->
+  <path d="M124 150 Q150 143 176 150" fill="none" stroke="#b07060" stroke-width="1"/>
+  <!-- frecce espiro potente -->
+  <line x1="150" y1="174" x2="150" y2="190" stroke="#9e7a8c" stroke-width="2.5" marker-end="url(#mh)"/>
+  <line x1="130" y1="170" x2="118" y2="184" stroke="#9e7a8c" stroke-width="2" marker-end="url(#mh)"/>
+  <line x1="170" y1="170" x2="182" y2="184" stroke="#9e7a8c" stroke-width="2" marker-end="url(#mh)"/>
+  <text x="150" y="212" text-anchor="middle" font-size="9.5" fill="#c8a84a" font-family="Georgia,serif" font-style="italic">inspira · apri bocca · espira "haaah"</text>
+</svg>`
+
+];
+
+const YOGA = [
+  {name:'Levigatore della Fronte',zona:'Fronte · Muscolo frontale',video:'https://www.youtube.com/watch?v=_roJyNQpyLo',steps:['Posiziona entrambe le mani piatte sulla fronte, dita verso il centro.','Fai scivolare le mani verso le tempie con leggera pressione verso l\'esterno.','Contemporaneamente alza le sopracciglia come se fossi sorpreso/a, resistendo con le dita.','Tieni 3 secondi, rilascia lentamente.'],reps:'8–10 ripetizioni · 30–60 secondi totali'},
+  {name:'Sollevatore delle Guance',zona:'Guance · Muscolo zigomatico',video:'https://www.youtube.com/watch?v=hdboMXrjeww',steps:['Sorridi ampiamente mostrando i denti — il più grande possibile.','Posiziona i polpastrelli sugli zigomi.','Spingi leggermente verso l\'alto mantenendo il sorriso.','Tieni 5 secondi sentendo la tensione sulle guance.'],reps:'6–8 ripetizioni · 45 secondi totali'},
+  {name:'Cerchi del Contorno Occhi',zona:'Contorno occhi · Muscolo orbicolare',video:'https://www.youtube.com/watch?v=BKz9Y6CEVd4',steps:['Posiziona i polpastrelli degli indici agli angoli esterni degli occhi.','Con pressione minima, segui l\'orbita ossea dal basso verso l\'alto.','Completa il cerchio sopra il sopracciglio e torna all\'angolo interno.','Non tirare mai la pelle — questo tessuto è sottilissimo.'],reps:'5 cerchi per lato · ripeti 3 volte'},
+  {name:'Rilascio della Mascella',zona:'Mascella · Collo · Platisma',video:'https://www.youtube.com/watch?v=KvjLky0s--M',steps:['Siediti dritto/a. Inclina la testa leggermente all\'indietro fissando il soffitto.','Premi la lingua al palato e deglutisci lentamente — senti il collo allungarsi.','Abbassa il mento e muovi la mascella da sinistra a destra 5 volte lentamente.','Torna alla posizione neutra e respira.'],reps:'Sequenza × 5 · 1 minuto totale'},
+  {name:'Il Bacio della Carpa',zona:'Labbra · Muscolo orbicolare della bocca',video:'https://www.youtube.com/watch?v=tziyHnv8EPc',steps:['Rilassa il viso e guarda dritto davanti a te.','Arriccia le labbra come se stessi applicando un rossetto, ben chiuse e pronunciate.','Tieni 5 secondi sentendo la tensione attorno alla bocca.','Rilascia e sorridi brevemente per alternare tensione e rilassamento.'],reps:'8 ripetizioni · 45 secondi totali'},
+  {name:'Allungamento del Collo',zona:'Collo · Muscoli SCM e platisma',video:'https://www.youtube.com/watch?v=UbONoUA8MM0',steps:['Siediti dritto/a. Inclina lentamente la testa verso la spalla destra.','Porta il mento leggermente su per allungare il lato sinistro del collo.','Tieni 20 secondi respirando regolarmente, poi cambia lato.','Bonus: abbassa il labbro inferiore mostrando i denti e tieni 10 secondi.'],reps:'2 lati × 20 s + platisma 3 × 10 s'},
+  {name:'Il Respiro del Leone',zona:'Viso completo · Rilascio tensione',video:'https://www.youtube.com/watch?v=xdUyHPa66A4',steps:['Inspira profondamente dal naso.','Apri la bocca il più possibile, allunga la lingua verso il mento.','Espira con forza con un suono "haaah" prolungato.','Senti tutti i muscoli del viso rilasciarsi. Torna all\'espressione neutra.'],reps:'5 cicli · pausa di 10 s tra ogni ciclo'},
+];
+
+const DS = ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'];
+const DF = ['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato','Domenica'];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────────────────────
+let chk = {}, notes = {}, openSecs = {}, customNames = {}, globalNote = '';
+try{chk=JSON.parse(localStorage.getItem('sk_chk')||'{}');}catch(e){}
+try{notes=JSON.parse(localStorage.getItem('sk_notes')||'{}');}catch(e){}
+try{openSecs=JSON.parse(localStorage.getItem('sk_secs')||'{}');}catch(e){}
+try{customNames=JSON.parse(localStorage.getItem('sk_names')||'{}');}catch(e){}
+try{globalNote=localStorage.getItem('sk_gnote')||'';}catch(e){}
+
+function saveChk(){try{localStorage.setItem('sk_chk',JSON.stringify(chk));}catch(e){}}
+function saveNotes(){try{localStorage.setItem('sk_notes',JSON.stringify(notes));}catch(e){}}
+function saveSecs(){try{localStorage.setItem('sk_secs',JSON.stringify(openSecs));}catch(e){}}
+function saveNames(){try{localStorage.setItem('sk_names',JSON.stringify(customNames));}catch(e){}}
+function saveGlobalNote(){try{localStorage.setItem('sk_gnote',globalNote);}catch(e){}}
+
+let day = new Date().getDay(); day = day===0?6:day-1;
+// default: solo la sera è aperta, tutto il resto chiuso
+function isSectionOpen(id){
+  if(openSecs[id] !== undefined) return openSecs[id] !== false;
+  // default: solo la sera è aperta per le sezioni giornaliere, note sempre aperte
+  return id === `${day}-e` || id === 'gnote';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// WORKOUT — fully custom, per-day
+// ─────────────────────────────────────────────────────────────────────────────
+// Storage: woData = { "0": { title:"Lunedì", items:[{id,name,serie,reps,note,done}] }, ... }
+let woData = {};
+try{ woData = JSON.parse(localStorage.getItem('sk_wo') || '{}'); }catch(e){}
+function saveWo(){ try{ localStorage.setItem('sk_wo', JSON.stringify(woData)); }catch(e){} }
+
+// ensure day entry exists
+function woDayEnsure(){
+  if(!woData[day]) woData[day] = { title:'', items:[] };
+}
+
+function woNewId(){
+  return Date.now().toString(36) + Math.random().toString(36).slice(2,5);
+}
+
+function woAddItem(){
+  woDayEnsure();
+  woData[day].items.push({ id: woNewId(), name:'Nuovo esercizio', serie:'', reps:'', note:'', done:false });
+  saveWo(); renderAll();
+}
+
+function woDeleteItem(id){
+  woDayEnsure();
+  woData[day].items = woData[day].items.filter(x => x.id !== id);
+  saveWo(); renderAll();
+}
+
+function woToggle(id){
+  woDayEnsure();
+  const it = woData[day].items.find(x => x.id === id);
+  if(it){ it.done = !it.done; saveWo(); renderAll(); }
+}
+
+function woSaveTitle(){
+  const el = document.getElementById('woTitleInput');
+  if(!el) return;
+  woDayEnsure();
+  woData[day].title = el.value;
+  saveWo();
+}
+
+// open the workout item sheet
+let currentWoId = null;
+function woOpenSheet(id){
+  woDayEnsure();
+  const it = woData[day].items.find(x => x.id === id);
+  if(!it) return;
+  currentWoId = id;
+  document.getElementById('shBody').innerHTML = `
+    <div class="shbl">
+      <div class="shla">Nome esercizio</div>
+      <input class="title-input" id="woName" type="text" value="${esc(it.name)}" oninput="woSaveField()" placeholder="es. Squat"/>
+    </div>
+    <div class="shbl" style="display:flex;gap:.7rem;">
+      <div style="flex:1">
+        <div class="shla">Serie</div>
+        <input class="title-input" id="woSerie" type="text" value="${esc(it.serie)}" oninput="woSaveField()" placeholder="es. 3"/>
+      </div>
+      <div style="flex:1">
+        <div class="shla">Reps / Durata</div>
+        <input class="title-input" id="woReps" type="text" value="${esc(it.reps)}" oninput="woSaveField()" placeholder="es. 12 / 40s"/>
+      </div>
+    </div>
+    <div class="shbl">
+      <div class="shla">Note</div>
+      <textarea class="notes-ta" id="woNote" oninput="woSaveField()" placeholder="Indicazioni, varianti, carichi…">${esc(it.note)}</textarea>
+    </div>
+    <div class="shbl" style="border-bottom:none;padding-bottom:0">
+      <button onclick="woDeleteItem('${id}');closeSheet();" class="wo-add-delete">✕ Elimina voce</button>
+    </div>
+  `;
+  document.getElementById('ov').classList.add('open');
+}
+
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+function woSaveField(){
+  if(!currentWoId) return;
+  woDayEnsure();
+  const it = woData[day].items.find(x => x.id === currentWoId);
+  if(!it) return;
+  const n = document.getElementById('woName');
+  const s = document.getElementById('woSerie');
+  const r = document.getElementById('woReps');
+  const no = document.getElementById('woNote');
+  if(n) it.name  = n.value;
+  if(s) it.serie = s.value;
+  if(r) it.reps  = r.value;
+  if(no) it.note  = no.value;
+  saveWo();
+  renderAll();
+}
+
+function renderWorkout(){
+  woDayEnsure();
+  const d = woData[day];
+  const items = d.items || [];
+  const done = items.filter(x=>x.done).length;
+  const total = items.length;
+  const pct = total ? Math.round(done/total*100) : 0;
+
+  const itemsHtml = items.map((it,i) => {
+    const sub = [it.serie ? it.serie+' serie' : '', it.reps || ''].filter(Boolean).join(' · ');
+    const hasNote = it.note && it.note.trim();
+    const detailHtml = sub ? '<div class="wo-ex-detail">' + esc(sub) + '</div>' : '';
+    const nameHtml = esc(it.name) + (hasNote ? '<span class="note-label" style="margin-left:.4rem">✎ nota</span>' : '');
+    return `<li class="wo-ex ${it.done?'done':''}">
+      <span class="wo-ex-num">${i+1}</span>
+      <div class="wo-ex-body" onclick="woOpenSheet('${it.id}')">
+        <div class="wo-ex-name">${nameHtml}</div>
+        ${detailHtml}
+      </div>
+      <div class="wo-ex-chk" onclick="woToggle('${it.id}')"></div>
+    </li>`;
+  }).join('');
+
+  const emptyHtml = `<div style="text-align:center;padding:1.4rem 0 .8rem;color:var(--sand);font-size:.68rem;font-style:italic">Nessun esercizio · aggiungine uno ↓</div>`;
+
+  const progHtml = total ? `<div class="prog" style="margin-top:.4rem"><div class="pbg"><div class="pfi" style="width:${pct}%"></div></div><div class="plb">${done} / ${total} completati</div></div>` : '';
+
+  return `<div class="wo-bd">
+    <div class="shla" style="margin-bottom:.35rem">Titolo scheda</div>
+    <input class="title-input" id="woTitleInput" type="text" value="${esc(d.title)}" oninput="woSaveTitle()" placeholder="es. Full Body · Lunedì" style="margin-bottom:1rem"/>
+    <ul class="wo-exercises">${items.length ? itemsHtml : emptyHtml}</ul>
+    ${progHtml}
+    <button onclick="woAddItem()" class="wo-add-btn">+ Aggiungi esercizio</button>
+  </div>`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────────────────────────────────────────
+function tlabel(k){return{retinoid:'Retinoid',glycolic:'Glicolico',peptide:'Peptidi',spf:'SPF',capelli:'Capelli',rose:'Rose'}[k]||k;}
+
+function renderStep(s,key,num){
+  const done=!!chk[key];
+  const info=INFO[s.k];
+  const displayName = customNames[key] || s.n;
+  const tags=(s.tags||[]).map(t=>`<span class="stag tag-${t}">${tlabel(t)}</span>`).join('');
+  const tim=s.t?`<span class="timing">${s.t}</span>`:'';
+  const hasNote = notes[key] && notes[key].trim().length > 0;
+  const noteLabel = hasNote ? `<span class="note-label">✎ nota</span>` : '';
+  const sub=info?`<div class="ssub">${info.qty} · tocca per dettagli</div>`:'';
+  const onclick = info ? ("openSheet('" + s.k + "','" + key + "')") : ("tog('" + key + "')");
+  return '<div class="step ' + (done?'done':'') + '">' +
+    '<span class="snum">' + num + '</span>' +
+    '<div class="chk" onclick="tog(\'' + key + '\')"></div>' +
+    '<div class="si" onclick="' + onclick + '">' +
+      '<div class="snr"><span class="sn">' + displayName + '</span>' + tim + tags + noteLabel + '</div>' + sub +
+    '</div>' +
+  '</div>';
+}
+
+function progBar(done,total){
+  const p=total?Math.round(done/total*100):0;
+  return `<div class="prog"><div class="pbg"><div class="pfi" style="width:${p}%"></div></div><div class="plb">${done} / ${total} completati</div></div>`;
+}
+
+function evBadge(d){return[0,2,4].includes(d)?'Retinoid':[3,6].includes(d)?'Glicolico':'Base';}
+
+function makeCard(id,iconEmoji,title,badgeClass,badgeText,bodyHtml){
+  const open=isSectionOpen(id);
+  return `<div class="card ${open?'':'shut'}" id="card-${id}">
+    <div class="card-hd" onclick="toggleCard('${id}')">
+      <span class="icon">${iconEmoji}</span>
+      <span class="title">${title}</span>
+      <span class="badge ${badgeClass}">${badgeText}</span>
+      <span class="chevron">›</span>
+    </div>
+    <div class="card-body">${bodyHtml}</div>
+  </div>`;
+}
+
+let gnoteTimer = null;
+function onGlobalNoteInput(){
+  globalNote = document.getElementById('gnoteArea').value;
+  saveGlobalNote();
+  clearTimeout(gnoteTimer);
+  const el = document.getElementById('gnoteSaved');
+  if(el){ el.classList.add('show'); gnoteTimer=setTimeout(()=>el.classList.remove('show'), 1600); }
+}
+
+// ── TIP INTERATTIVO ──────────────────────────────────────────────────────────
+let tipTimerState = {running:false, phase:0, rep:0, elapsed:0, interval:null};
+
+function renderTip(){
+  const t = TIPS[day];
+  const e = t.esercizio;
+  const r = 44;
+  const circ = Math.round(2 * Math.PI * r);
+  return '<div class="tip-bd">'
+    + '<div class="tip-icon">' + t.icon + '</div>'
+    + '<div class="tip-titolo">' + t.titolo + '</div>'
+    + '<div class="tip-testo">' + t.testo + '</div>'
+    + '<div class="tip-intro">' + e.intro + '</div>'
+    + '<div class="tip-timer">'
+    + '<div class="tip-fase-label" id="tipFaseLabel">—</div>'
+    + '<div class="tip-countdown" id="tipCountdown">—</div>'
+    + '<svg class="tip-progress-ring" width="100" height="100" viewBox="0 0 100 100">'
+    + '<circle cx="50" cy="50" r="' + r + '" fill="none" stroke="var(--line)" stroke-width="4"/>'
+    + '<circle id="tipRing" cx="50" cy="50" r="' + r + '" fill="none" stroke="var(--gold)" stroke-width="4"'
+    + ' stroke-dasharray="' + circ + '" stroke-dashoffset="' + circ + '"'
+    + ' stroke-linecap="round" transform="rotate(-90 50 50)"'
+    + ' style="transition:stroke-dashoffset .9s ease,stroke .4s"/>'
+    + '</svg>'
+    + '<div class="tip-rip" id="tipRip">0 / ' + e.ripetizioni + ' ripetizioni</div>'
+    + '<button class="tip-avvia" id="tipBtn" onclick="tipStart()">▶ Avvia</button>'
+    + '</div>'
+    + '</div>';
+}
+
+function getTipNote(){
+  try{ return localStorage.getItem('sk_tipnote_' + day) || ''; }catch(e){ return ''; }
+}
+function saveTipNote(v){
+  try{ localStorage.setItem('sk_tipnote_' + day, v); }catch(e){}
+}
+
+function tipStart(){
+  const t = TIPS[day];
+  if(t.type !== 'esercizio') return;
+  const e = t.esercizio;
+  if(tipTimerState.running){ tipStop(); return; }
+  tipTimerState = {running:true, phase:0, rep:0, elapsed:0, interval:null};
+  document.getElementById('tipBtn').textContent = '■ Ferma';
+  tipTick(e);
+  tipTimerState.interval = setInterval(()=>tipTick(e), 1000);
+}
+
+function tipStop(){
+  clearInterval(tipTimerState.interval);
+  tipTimerState.running = false;
+  const btn = document.getElementById('tipBtn');
+  if(btn){ btn.textContent = '▶ Avvia'; }
+  const lbl = document.getElementById('tipFaseLabel');
+  if(lbl) lbl.textContent = '—';
+  const cd = document.getElementById('tipCountdown');
+  if(cd) cd.textContent = '—';
+  const ring = document.getElementById('tipRing');
+  if(ring){
+    const r=44; const circ=Math.round(2*Math.PI*r);
+    ring.style.strokeDashoffset = circ;
+  }
+}
+
+function tipTick(e){
+  const s = tipTimerState;
+  if(!s.running) return;
+  const fase = e.fasi[s.phase];
+  const remaining = fase.durata - s.elapsed;
+
+  // update UI
+  const lbl = document.getElementById('tipFaseLabel');
+  const cd  = document.getElementById('tipCountdown');
+  const ring= document.getElementById('tipRing');
+  const rip = document.getElementById('tipRip');
+
+  if(lbl) lbl.textContent = fase.label;
+  if(cd)  cd.textContent  = remaining + 's';
+  if(ring){
+    const r=44; const circ=Math.round(2*Math.PI*r);
+    const progress = s.elapsed / fase.durata;
+    ring.style.strokeDashoffset = Math.round(circ * (1 - progress));
+    ring.style.stroke = fase.colore;
+  }
+  if(rip) rip.textContent = s.rep + ' / ' + e.ripetizioni + ' ripetizioni';
+
+  s.elapsed++;
+
+  if(s.elapsed > fase.durata){
+    s.elapsed = 0;
+    s.phase++;
+    if(s.phase >= e.fasi.length){
+      s.phase = 0;
+      s.rep++;
+      if(s.rep >= e.ripetizioni){
+        // DONE
+        clearInterval(s.interval);
+        s.running = false;
+        if(lbl) lbl.textContent = '✓ Completato';
+        if(cd)  cd.textContent  = '';
+        const btn = document.getElementById('tipBtn');
+        if(btn){ btn.textContent = '▶ Rifai'; }
+        if(rip) rip.textContent = e.ripetizioni + ' / ' + e.ripetizioni + ' ripetizioni';
+        return;
+      }
+    }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BRAIN / MEMORIA & LOGICA
+// ─────────────────────────────────────────────────────────────────────────────
+const BRAIN = [
+  { // Lunedì — Sequenza visiva
+    type:'sequenza', icon:'🔢', titolo:'Memoria delle Sequenze',
+    testo:'Allena la memoria di lavoro riordinando elementi in sequenza. Questo tipo di esercizio rafforza la corteccia prefrontale e migliora la concentrazione.',
+    intro:'Riordina i numeri dal più piccolo al più grande toccandoli in ordine.',
+    items:['7','2','15','4','11','1','9','6'],
+    soluzione:['1','2','4','6','7','9','11','15'],
+    hint:'Inizia dai numeri più piccoli che riesci a individuare a colpo d\'occhio.',
+    feedback_ok:'Ottimo! La memoria sequenziale è uno dei pilastri dell\'intelligenza fluida.',
+    feedback_ko:'Non ancora — riprova. Guarda tutti i numeri prima di iniziare.'
+  },
+  { // Martedì — Indovinello logico
+    type:'risposta', icon:'🧩', titolo:'Ragionamento Deduttivo',
+    testo:'Il ragionamento deduttivo è la capacità di partire da premesse generali per arrivare a conclusioni specifiche — una delle abilità cognitive più importanti.',
+    domanda:'Un treno parte da Milano alle 8:00 a 120 km/h. Un altro parte da Roma (550 km) alle 9:00 a 100 km/h. A che ora si incontrano? (approssima ai minuti)',
+    soluzione:'11:30',
+    soluzioni_valide:['11:30','11.30','alle 11:30','ore 11:30'],
+    hint:'Calcola quanta distanza copre il primo treno nell\'ora di vantaggio, poi quanto rimane da percorrere insieme.',
+    feedback_ok:'Esatto! I treni si incontrano dopo 2,5 ore dalla partenza del secondo (distanza residua 430km ÷ 220 km/h).',
+    feedback_ko:'Non esatto. I treni si incontrano alle 11:30. Il primo percorre 120 km nella prima ora, ne rimangono 430 da coprire insieme a 220 km/h = 1h 57min circa → arrotonda alle 11:30.'
+  },
+  { // Mercoledì — Anagramma
+    type:'anagramma', icon:'🔤', titolo:'Anagramma',
+    testo:'Gli anagrammi allenano la flessibilità cognitiva e il pensiero laterale — la capacità di vedere le cose da prospettive diverse.',
+    intro:'Riordina le lettere per formare una parola.',
+    parola:'CREATIVITÀ',
+    letters:['C','R','E','A','T','I','V','I','T','À'],
+    soluzione:'CREATIVITÀ',
+    hint:'La parola ha a che fare con l\'arte e l\'immaginazione.',
+    feedback_ok:'Perfetto! Creatività — la capacità di vedere connessioni che altri non vedono.',
+    feedback_ko:'Non ancora. La parola è CREATIVITÀ.'
+  },
+  { // Giovedì — Puzzle logico
+    type:'risposta', icon:'🔍', titolo:'Puzzle Logico',
+    testo:'I puzzle laterali allenano il pensiero non lineare e la capacità di mettere in discussione le assunzioni implicite — fondamentale per la creatività.',
+    domanda:'Ho fratelli e sorelle non ne ho, ma il padre di quell\'uomo è il figlio di mio padre. Chi è quell\'uomo?',
+    soluzione:'mio figlio',
+    soluzioni_valide:['mio figlio','il mio figlio','figlio mio','mio/a figlio/a'],
+    hint:'Parti da chi sei tu nel ragionamento. "Il figlio di mio padre" sei tu.',
+    feedback_ok:'Esatto! "Il figlio di mio padre" sono io → il padre di quell\'uomo sono io → quell\'uomo è mio figlio.',
+    feedback_ko:'Non esatto. La risposta è: mio figlio. "Il figlio di mio padre" sei tu — quindi sei il padre di quell\'uomo.'
+  },
+  { // Venerdì — Memoria parole
+    type:'sequenza', icon:'💭', titolo:'Memoria Verbale',
+    testo:'La memoria verbale è la capacità di immagazzinare e richiamare informazioni linguistiche. Si allena con la ripetizione e l\'associazione semantica.',
+    intro:'Riordina le parole per ricostruire il proverbio corretto.',
+    items:['pietra','non','muschio','che','fa','rotola','La'],
+    soluzione:['La','pietra','che','rotola','non','fa','muschio'],
+    hint:'È un proverbio italiano molto comune.',
+    feedback_ok:'Bravo/a! "La pietra che rotola non fa muschio" — chi non si ferma mai non costruisce nulla di duraturo.',
+    feedback_ko:'Non ancora. Il proverbio è: "La pietra che rotola non fa muschio".'
+  },
+  { // Sabato — Calcolo mentale
+    type:'risposta', icon:'🔢', titolo:'Calcolo Mentale',
+    testo:'Il calcolo mentale mantiene attive le connessioni neurali legate alla matematica e migliora la velocità di elaborazione cognitiva.',
+    domanda:'Senza usare la calcolatrice: 17 × 13 = ?',
+    soluzione:'221',
+    soluzioni_valide:['221'],
+    hint:'Prova con (17 × 10) + (17 × 3) oppure (20 × 13) − (3 × 13).',
+    feedback_ok:'Esatto! 221. Il trucco: 17 × 13 = (15 + 2)(15 − 2) = 225 − 4 = 221.',
+    feedback_ko:'Non esatto. La risposta è 221. Metodo: (17 × 10) + (17 × 3) = 170 + 51 = 221.'
+  },
+  { // Domenica — Indovinello creativo
+    type:'risposta', icon:'✨', titolo:'Pensiero Laterale',
+    testo:'Il pensiero laterale sfida le assunzioni automatiche del cervello e apre nuove vie di ragionamento — è il tipo di intelligenza che si allena meno e serve di più.',
+    domanda:'Un uomo vive al 30° piano. Ogni mattina prende l\'ascensore fino al piano terra e va al lavoro. La sera, se piove o se c\'è qualcun altro in ascensore, sale fino al 30°. Altrimenti scende al 15° e sale a piedi. Perché?',
+    soluzione:'è basso di statura',
+    soluzioni_valide:['è basso','basso di statura','è troppo basso','non arriva al bottone','non raggiunge il 30','non arriva al tasto'],
+    hint:'Non è una questione di preferenze o abitudini strane. Pensa fisicamente.',
+    feedback_ok:'Esatto! L\'uomo è molto basso: non raggiunge il pulsante del 30° piano. Con la pioggia usa l\'ombrello come prolunga, altrimenti chiede aiuto a qualcuno.',
+    feedback_ko:'Non esatto. L\'uomo è basso di statura e non raggiunge il pulsante del 30° piano — usa l\'ombrello o chiede ad altri di premerlo.'
+  },
+];
+
+// brain state
+let brainState = {};
+try{ brainState = JSON.parse(localStorage.getItem('sk_brain')||'{}'); }catch(e){}
+function saveBrain(){ try{ localStorage.setItem('sk_brain', JSON.stringify(brainState)); }catch(e){} }
+
+function renderBrain(){
+  const b = BRAIN[brainIdx];
+  let html = '<div class="brain-bd">'
+    + '<div class="brain-type">' + b.icon + ' ' + b.titolo + '</div>'
+    + '<div class="brain-testo">' + b.testo + '</div>'
+    + '<div class="brain-esercizio">';
+
+  if(b.type === 'sequenza'){
+    html += '<div class="brain-domanda">' + b.intro + '</div>';
+    // scramble display
+    const answered = brainState['seq_'+day] || [];
+    const remaining = b.items.filter(x => !answered.includes(x) || b.items.filter(v=>v===x).length > answered.filter(v=>v===x).length);
+    html += '<div class="brain-sequence" id="brainItems">'
+      + b.items.map((it,i) => {
+          const used = (brainState['seq_used_'+brainIdx]||[]).includes(i);
+          return '<div class="brain-seq-item' + (used?' selected':'') + '" onclick="brainSeqPick('+i+',this)">' + it + '</div>';
+        }).join('')
+      + '</div>';
+    html += '<div class="brain-seq-answer" id="brainAnswer">'
+      + (brainState['seq_answer_'+brainIdx]||[]).map(v=>'<div class="brain-seq-item">'+v+'</div>').join('')
+      + '</div>';
+    html += '<button class="brain-clear-btn" onclick="brainSeqClear()">↺ Ricomincia</button>';
+    html += '<button class="brain-check-btn" onclick="brainSeqCheck()">Verifica</button>';
+
+  } else if(b.type === 'risposta'){
+    html += '<div class="brain-domanda">' + b.domanda + '</div>';
+    html += '<button class="brain-hint-btn" onclick="brainToggleHint()">💡 Suggerimento</button>';
+    html += '<div class="brain-hint" id="brainHint">' + b.hint + '</div>';
+    const prev = brainState['ans_'+brainIdx] || '';
+    html += '<div class="brain-risposta-wrap">'
+      + '<input class="brain-risposta-input" id="brainInput" type="text" placeholder="La tua risposta..." value="' + esc(prev) + '" oninput="brainSaveInput(this.value)"/>'
+      + '<button class="brain-check-btn" onclick="brainCheckAnswer()">Verifica</button>'
+      + '</div>';
+
+  } else if(b.type === 'anagramma'){
+    html += '<div class="brain-domanda">' + b.intro + '</div>';
+    const usedIdx = brainState['ana_used_'+brainIdx] || [];
+    const ansLetters = brainState['ana_ans_'+brainIdx] || [];
+    html += '<div class="brain-letter-answer" id="brainAnaAns">'
+      + ansLetters.map((l,i)=>'<div class="brain-letter" onclick="brainAnaRemove('+i+')">'+l+'</div>').join('')
+      + '</div>';
+    html += '<div class="brain-anagram-letters" id="brainAnaPool">'
+      + b.letters.map((l,i)=>'<div class="brain-letter'+(usedIdx.includes(i)?' used':'')+'" onclick="brainAnaPick('+i+',\''+l+'\')">'+l+'</div>').join('')
+      + '</div>';
+    html += '<button class="brain-clear-btn" onclick="brainAnaClear()">↺ Ricomincia</button>';
+    html += '<button class="brain-check-btn" onclick="brainAnaCheck()">Verifica</button>';
+  }
+
+  const fb = brainState['fb_'+brainIdx];
+  const fbClass = fb === 'ok' ? 'ok' : fb === 'ko' ? 'ko' : '';
+  const fbText  = fb === 'ok' ? b.feedback_ok : fb === 'ko' ? b.feedback_ko : '';
+  html += '<div class="brain-feedback ' + fbClass + (fb?' show':'') + '" id="brainFeedback">' + fbText + '</div>';
+  html += '</div>';
+  html += '<div style="display:flex;gap:.5rem;margin-top:.6rem">'+'<button class="brain-hint-btn" style="flex:1" onclick="brainReset()">↺ Resetta</button>'+'<button class="brain-hint-btn" style="flex:1" onclick="brainNewRandom()">🎲 Nuovo esercizio</button>'+'</div>';
+  html += '</div>';
+  return html;
+}
+
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+// sequenza
+function brainSeqPick(idx, el){
+  const b = BRAIN[brainIdx];
+  const used = brainState['seq_used_'+brainIdx] || [];
+  if(used.includes(idx)) return;
+  used.push(idx);
+  brainState['seq_used_'+brainIdx] = used;
+  const ans = brainState['seq_answer_'+brainIdx] || [];
+  ans.push(b.items[idx]);
+  brainState['seq_answer_'+brainIdx] = ans;
+  saveBrain(); renderAll();
+}
+function brainSeqClear(){
+  delete brainState['seq_used_'+brainIdx];
+  delete brainState['seq_answer_'+brainIdx];
+  delete brainState['fb_'+brainIdx];
+  saveBrain(); renderAll();
+}
+function brainSeqCheck(){
+  const b = BRAIN[brainIdx];
+  const ans = brainState['seq_answer_'+brainIdx] || [];
+  const ok = JSON.stringify(ans) === JSON.stringify(b.soluzione);
+  brainState['fb_'+brainIdx] = ok ? 'ok' : 'ko';
+  saveBrain(); renderAll();
+}
+
+// risposta libera
+function brainSaveInput(v){ brainState['ans_'+brainIdx] = v; saveBrain(); }
+function brainToggleHint(){
+  const el = document.getElementById('brainHint');
+  if(el) el.classList.toggle('show');
+}
+function brainCheckAnswer(){
+  const b = BRAIN[brainIdx];
+  const inp = document.getElementById('brainInput');
+  if(!inp) return;
+  const val = inp.value.trim().toLowerCase();
+  const ok = (b.soluzioni_valide||[b.soluzione]).some(s => val === s.toLowerCase() || val.includes(s.toLowerCase().split(' ')[0]));
+  brainState['fb_'+brainIdx] = ok ? 'ok' : 'ko';
+  saveBrain(); renderAll();
+}
+
+// anagramma
+function brainAnaPick(idx, letter){
+  const used = brainState['ana_used_'+brainIdx] || [];
+  if(used.includes(idx)) return;
+  used.push(idx);
+  brainState['ana_used_'+brainIdx] = used;
+  const ans = brainState['ana_ans_'+brainIdx] || [];
+  ans.push(letter);
+  brainState['ana_ans_'+brainIdx] = ans;
+  saveBrain(); renderAll();
+}
+function brainAnaRemove(ansIdx){
+  const b = BRAIN[brainIdx];
+  const ans = brainState['ana_ans_'+brainIdx] || [];
+  const used = brainState['ana_used_'+brainIdx] || [];
+  const letter = ans[ansIdx];
+  // find original pool index
+  const poolIdx = used[ansIdx];
+  ans.splice(ansIdx,1);
+  used.splice(ansIdx,1);
+  brainState['ana_ans_'+brainIdx] = ans;
+  brainState['ana_used_'+brainIdx] = used;
+  delete brainState['fb_'+brainIdx];
+  saveBrain(); renderAll();
+}
+function brainAnaClear(){
+  delete brainState['ana_used_'+brainIdx];
+  delete brainState['ana_ans_'+brainIdx];
+  delete brainState['fb_'+brainIdx];
+  saveBrain(); renderAll();
+}
+function brainAnaCheck(){
+  const b = BRAIN[brainIdx];
+  const ans = (brainState['ana_ans_'+brainIdx] || []).join('');
+  const ok = ans.toUpperCase() === b.soluzione.toUpperCase();
+  brainState['fb_'+brainIdx] = ok ? 'ok' : 'ko';
+  saveBrain(); renderAll();
+}
+function brainReset(){
+  ['seq_used_','seq_answer_','ans_','ana_used_','ana_ans_','fb_'].forEach(k => delete brainState[k+brainIdx]);
+  saveBrain(); renderAll();
+}
+function brainNewRandom(){
+  brainIdx = Math.floor(Math.random() * BRAIN.length);
+  brainState['today_idx'] = brainIdx;
+  ['seq_used_','seq_answer_','ans_','ana_used_','ana_ans_','fb_'].forEach(k => delete brainState[k+brainIdx]);
+  saveBrain(); renderAll();
+}
+
+// brain: indice casuale, cambia ogni volta che si apre l'app (non ogni renderAll)
+let brainIdx = brainState['today_idx'];
+if(brainIdx === undefined){
+  brainIdx = Math.floor(Math.random() * BRAIN.length);
+  brainState['today_idx'] = brainIdx;
+  saveBrain();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+function renderAll(){
+  const eve=E[day];
+  const mK=M.map((_,i)=>day+'-m-'+i);
+  const eK=eve.map((_,i)=>day+'-e-'+i);
+  const hK=day+'-h';
+  const mD=mK.filter(k=>chk[k]).length;
+  const eD=eK.filter(k=>chk[k]).length;
+  const hD=chk[hK]?1:0;
+  const total=M.length+eve.length+1;
+  const done=mD+eD+hD;
+  const y=YOGA[day];
+
+  const morningBody='<div class="steps">' + M.map((s,i)=>renderStep(s,day+'-m-'+i,i+1)).join('') + '</div>' + progBar(mD,M.length);
+  const eveningBody='<div class="steps">' + eve.map((s,i)=>renderStep(s,day+'-e-'+i,i+1)).join('') + '</div>' + progBar(eD,eve.length);
+  const hairBody='<div class="steps">' + renderStep(HAIR,hK,1) + '</div>';
+  const tipBody = renderTip();
+  const yogaBody=`<div class="yoga-bd">
+    <div class="yna">${y.name}</div>
+    <div class="yzo">${y.zona}</div>
+    <div class="yill">${Y_SVG[day]}</div>
+    <ul class="ysteps">${y.steps.map((s,i)=>`<li data-n="${i+1}.">${s}</li>`).join('')}</ul>
+    <span class="yreps">⏱ ${y.reps}</span>
+    <br><button class="yvideo" onclick="openVideo('${y.video}','${y.name}')">▶ Guarda il video di riferimento</button>
+  </div>`;
+
+  const workoutBody = renderWorkout();
+
+  const brainBody = renderBrain();
+  document.getElementById('content').innerHTML =
+    makeCard(`${day}-m`,'☀️','Mattina','bm','Tutti i giorni',morningBody)+
+    makeCard(`${day}-e`,'🌙',`Sera · ${DF[day]}`,'be',evBadge(day),eveningBody)+
+    makeCard(`${day}-h`,'💆','Capelli','','Ogni sera',hairBody)+
+    makeCard(`${day}-yoga`,'🧘','Yoga del Viso','by','Face yoga',yogaBody)+
+    makeCard(`${day}-wo`,'💪','Allenamento','bw','Custom',workoutBody)+
+    makeCard(`${day}-tip`,'🧠','Pratica del Giorno','bt','Mente',tipBody)+
+    makeCard('brain','🔮','Mente & Memoria','bb','Logica',brainBody)+
+    `<div class="congrats ${done===total?'show':''}">Routine completata ✦ Brava!</div>`;
+
+  // aggiorna colori SVG yoga in base al tema corrente
+  updateYogaSvgColors(currentTheme);
+}
+
+function renderDays(){
+  document.getElementById('daySel').innerHTML=DS.map((d,i)=>
+    `<button class="db ${i===day?'on':''}" onclick="setDay(${i})">${d}</button>`
+  ).join('');
+}
+
+function setDay(i){day=i;renderDays();renderAll();}
+function tog(k){chk[k]=!chk[k];saveChk();renderAll();}
+function resetDay(){
+  Object.keys(chk).filter(k=>k.startsWith(day+'-')).forEach(k=>delete chk[k]);
+  saveChk();
+  // rimuovi le chiavi così isSectionOpen ritorna true (default)
+  [`${day}-m`,`${day}-e`,`${day}-h`,`${day}-wo`,`${day}-tip`,`${day}-yoga`,'brain'].forEach(id=>{ delete openSecs[id]; });
+  saveSecs();
+  renderAll();
+}
+
+function toggleCard(id){
+  const c=document.getElementById('card-'+id);
+  const wasOpen=!c.classList.contains('shut');
+  c.classList.toggle('shut',wasOpen);
+  openSecs[id]=!wasOpen;
+  saveSecs();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SHEET
+// ─────────────────────────────────────────────────────────────────────────────
+let currentSheetKey = null;
+let currentStepKey = null;
+
+function openSheet(k, stepKey){
+  const d=INFO[k]; if(!d) return;
+  currentSheetKey = k;
+  currentStepKey = stepKey || k;
+  const tags=(d.tags||[]).map(t=>`<span class="stag tag-${t.k}" style="font-size:.58rem;padding:.18rem .45rem">${t.l}</span>`).join('');
+  const noteVal = notes[currentStepKey]||'';
+  const nameVal = customNames[currentStepKey]||d.n;
+  const isCustom = !!customNames[currentStepKey];
+  const resetLink = isCustom ? '<span class="title-reset" onclick="resetName()">↺ ripristina nome originale</span>' : '';
+  document.getElementById('shBody').innerHTML=`
+    <div class="shbl" style="padding-bottom:.8rem;margin-bottom:.8rem;border-bottom:1px dashed var(--warm)">
+      <div class="shla">Nome voce</div>
+      <input class="title-input" id="titleInput" type="text" value="${nameVal.replace(/"/g,'&quot;')}" oninput="saveName()" placeholder="${d.n}"/>
+      ${resetLink}
+    </div>
+    <div class="shta">${tags}</div>
+    <div class="shbl"><div class="shla">Quantità</div><div class="shqt">${d.qty}</div></div>
+    <div class="shbl"><div class="shla">Come applicare</div><div class="shtx">${d.come}</div></div>
+    <div class="shbl"><div class="shla">Consiglio</div><div class="shtx">${d.cons}</div></div>
+    <div class="shbl">
+      <div class="shla">Le mie note</div>
+      <div class="notes-wrap">
+        <textarea class="notes-ta" id="noteTa" placeholder="Aggiungi una nota personale…" oninput="saveNote()">${noteVal}</textarea>
+        <div class="notes-saved" id="noteSaved">✓ salvato</div>
+      </div>
+    </div>
+  `;
+  document.getElementById('ov').classList.add('open');
+}
+
+let noteSaveTimer = null;
+function saveName(){
+  const inp = document.getElementById('titleInput');
+  if(!inp || !currentStepKey) return;
+  const d = INFO[currentSheetKey];
+  const val = inp.value.trim();
+  if(val && val !== d.n){ customNames[currentStepKey]=val; }
+  else { delete customNames[currentStepKey]; }
+  saveNames();
+  // aggiorna link ripristina live nel popup
+  const resetEl = inp.nextElementSibling;
+  if(customNames[currentStepKey]){
+    if(!resetEl || !resetEl.classList.contains('title-reset')){
+      const span = document.createElement('span');
+      span.className = 'title-reset';
+      span.textContent = '↺ ripristina nome originale';
+      span.onclick = resetName;
+      inp.parentNode.appendChild(span);
+    }
+  } else {
+    if(resetEl && resetEl.classList.contains('title-reset')) resetEl.remove();
+  }
+  renderAll();
+}
+function resetName(){
+  if(!currentStepKey) return;
+  delete customNames[currentStepKey];
+  saveNames();
+  const inp = document.getElementById('titleInput');
+  if(inp){ inp.value = INFO[currentSheetKey].n; }
+  const resetEl = inp && inp.nextElementSibling;
+  if(resetEl && resetEl.classList.contains('title-reset')) resetEl.remove();
+  renderAll();
+}
+function saveNote(){
+  const ta = document.getElementById('noteTa');
+  if(!ta || !currentStepKey) return;
+  notes[currentStepKey] = ta.value;
+  saveNotes();
+  clearTimeout(noteSaveTimer);
+  const el = document.getElementById('noteSaved');
+  if(el){ el.classList.add('show'); noteSaveTimer=setTimeout(()=>{ el.classList.remove('show'); renderAll(); },1800); }
+}
+
+function closeSheet(){document.getElementById('ov').classList.remove('open');currentSheetKey=null;}
+function maybeClose(e){if(e.target===document.getElementById('ov'))closeSheet();}
+
+function openVideo(url, title){
+  // Extract YouTube video ID
+  const match = url.match(/(?:v=|embed\/|shorts\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  const videoId = match ? match[1] : '';
+  const thumbUrl = videoId ? 'https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg' : '';
+  document.getElementById('vTitle').textContent = title;
+  document.getElementById('vThumb').innerHTML = thumbUrl
+    ? '<img src="' + thumbUrl + '" alt=""/><div class="play-icon"></div>'
+    : '';
+  document.getElementById('vLink').href = url;
+  document.getElementById('vov').classList.add('open');
+}
+function closeVideo(e){
+  if(e && e.target !== document.getElementById('vov')) return;
+  document.getElementById('vov').classList.remove('open');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PWA
+// ─────────────────────────────────────────────────────────────────────────────
+const svgIcon=`<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><rect width="512" height="512" rx="115" fill="#141210"/><defs><linearGradient id="g1" x1="30%" y1="10%" x2="70%" y2="90%"><stop offset="0%" stop-color="#e8c86a"/><stop offset="100%" stop-color="#9a7830"/></linearGradient></defs><path d="M256 100 C256 100 168 220 168 300 a88 88 0 0 0 176 0 C344 220 256 100 256 100Z" fill="url(#g1)"/><path d="M256 100 C240 145 185 218 168 300 a88 88 0 0 0 88 88Z" fill="#141210" opacity=".18"/><ellipse cx="226" cy="240" rx="18" ry="30" fill="white" opacity=".12" transform="rotate(-20,226,240)"/><line x1="210" y1="412" x2="302" y2="412" stroke="#c8a84a" stroke-width="2.5" stroke-linecap="round" opacity=".4"/></svg>`;
+const blob=new Blob([JSON.stringify({name:'La Mia Routine',short_name:'Routine',display:'standalone',background_color:'#f5f0eb',theme_color:'#f5f0eb',icons:[{src:'data:image/svg+xml;base64,'+btoa(svgIcon),sizes:'512x512',type:'image/svg+xml'}]})],{type:'application/json'});
+document.getElementById('manifestLink').href=URL.createObjectURL(blob);
+document.getElementById('appIcon').href='data:image/svg+xml;base64,'+btoa(svgIcon);
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── THEME ──
+let currentTheme = 'dark';
+try{ currentTheme = localStorage.getItem('sk_theme') || 'dark'; }catch(e){}
+function applyTheme(t){
+  currentTheme = t;
+  document.body.classList.toggle('light', t === 'light');
+  const lbl = document.getElementById('themeLabel');
+  if(lbl) lbl.textContent = t === 'light' ? 'Passa al tema scuro' : 'Passa al tema chiaro';
+  try{ localStorage.setItem('sk_theme', t); }catch(e){}
+  // aggiorna colori SVG yoga
+  updateYogaSvgColors(t);
+}
+
+function updateYogaSvgColors(t){
+  // colori dark → light mapping
+  const pairs = [
+    ['#1a1612', '#f0e8e0'],  // sfondo SVG
+    ['#141210', '#f0e8e0'],  // sfondo alternativo
+    ['#3a2e28', '#f5e8d8'],  // viso
+    ['#4a3a30', '#e4cfc0'],  // collo / orecchie / mani
+    ['#5a3a28', '#c4906a'],  // iride
+    ['#6a5040', '#c4a882'],  // capelli
+  ];
+  document.querySelectorAll('.yill svg').forEach(svg => {
+    svg.querySelectorAll('[fill]').forEach(el => {
+      const f = el.getAttribute('fill').toLowerCase();
+      for(const [dark, light] of pairs){
+        if(t === 'light' && f === dark){ el.setAttribute('fill', light); break; }
+        if(t === 'dark'  && f === light){ el.setAttribute('fill', dark);  break; }
+      }
+    });
+  });
+}
+function toggleTheme(){
+  applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+}
+// apply on load
+applyTheme(currentTheme);
+
+// ── TIMER FLOTTANTE ──────────────────────────────────────────────────────────
+let ft = { running:false, remaining:0, interval:null };
+
+function toggleFTimer(){
+  document.getElementById('ftimerPanel').classList.toggle('open');
+  // rimuovi animazione quando apri
+  document.getElementById('ftimerBtn').classList.remove('done');
+  document.getElementById('ftimerBadge').classList.remove('show');
+}
+function ftimerToggle(){
+  if(ft.running){ ftimerPause(); } else { ftimerStart(); }
+}
+function ftimerStart(){
+  if(ft.remaining <= 0){
+    const m = parseInt(document.getElementById('ftimerMin').value)||0;
+    const s = parseInt(document.getElementById('ftimerSec').value)||0;
+    ft.remaining = m*60+s;
+    if(ft.remaining <= 0) return;
+  }
+  ft.running = true;
+  document.getElementById('ftimerStartBtn').textContent = '⏸ Pausa';
+  document.getElementById('ftimerDisplay').classList.add('running');
+  document.getElementById('ftimerDisplay').classList.remove('done');
+  ft.interval = setInterval(ftimerTick, 1000);
+}
+function ftimerPause(){
+  ft.running = false;
+  clearInterval(ft.interval);
+  document.getElementById('ftimerStartBtn').textContent = '▶ Riprendi';
+  document.getElementById('ftimerDisplay').classList.remove('running');
+}
+function ftimerTick(){
+  ft.remaining--;
+  ftimerUpdateDisplay();
+  if(ft.remaining <= 0){
+    clearInterval(ft.interval);
+    ft.running = false;
+    document.getElementById('ftimerStartBtn').textContent = '▶ Avvia';
+    document.getElementById('ftimerDisplay').classList.remove('running');
+    document.getElementById('ftimerDisplay').classList.add('done');
+    document.getElementById('ftimerLabel').textContent = '✓ completato';
+    if(navigator.vibrate) navigator.vibrate([300,100,300]);
+    // se il pannello è chiuso, anima il bottone
+    const panel = document.getElementById('ftimerPanel');
+    if(!panel.classList.contains('open')){
+      document.getElementById('ftimerBtn').classList.add('done');
+      document.getElementById('ftimerBadge').classList.add('show');
+    }
+  }
+}
+function ftimerReset(){
+  clearInterval(ft.interval);
+  ft.running = false; ft.remaining = 0;
+  document.getElementById('ftimerStartBtn').textContent = '▶ Avvia';
+  document.getElementById('ftimerDisplay').classList.remove('running','done');
+  document.getElementById('ftimerLabel').textContent = 'imposta minuti e secondi';
+  const m = parseInt(document.getElementById('ftimerMin').value)||0;
+  const s = parseInt(document.getElementById('ftimerSec').value)||0;
+  ftimerUpdateDisplay(m*60+s);
+}
+function ftimerUpdateDisplay(val){
+  const v = val !== undefined ? val : ft.remaining;
+  const m = Math.floor(v/60); const s = v%60;
+  document.getElementById('ftimerDisplay').textContent =
+    String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+
+renderDays();
+renderAll();
+updateYogaSvgColors(currentTheme);
+// init global note
+const _gn = document.getElementById('gnoteArea');
+if(_gn) _gn.value = globalNote;
+</script>
+</body>
+</html>
